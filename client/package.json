@@ -1,0 +1,22 @@
+{
+  "name": "NuxtJS",
+  "version": "1.0.0",
+  "description": "My primo Nuxt.js project",
+  "author": "chenyh1994",
+  "private": true,
+  "scripts": {
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt generate"
+  },
+  "dependencies": {
+    "axios": "^0.19.0",
+    "geolocation-marker": "^2.0.5",
+    "nuxt": "^2.9.2",
+    "nuxt-gmaps": "^1.0.4"
+  },
+  "devDependencies": {
+    "@nuxtjs/vuetify": "^1.9.0"
+  }
+}
