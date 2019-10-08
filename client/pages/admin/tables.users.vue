@@ -32,19 +32,16 @@
 <script>
 import {server} from '../../plugins/helper';
 import axios from "axios";
-
   export default {
     data () {
       return {
         users: [ ],
       }
     },
-
  
     created() {
         this.fetchUsers();
     },
-
     methods: {
     fetchUsers() {
       axios

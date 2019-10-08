@@ -12,13 +12,19 @@
 
         <v-text-field
         v-model="firstName"
-        label="FirstName"
+        label="First Name"
         required
         ></v-text-field>
 
         <v-text-field
         v-model="lastName"
-        label="LastName"
+        label="Last Name"
+        required
+        ></v-text-field>
+
+        <v-text-field
+        v-model="username"
+        label="User Name"
         required
         ></v-text-field>
 
@@ -67,6 +73,7 @@ export default {
         password: '',
         firstName: '',
         lastName: '',
+        username: '',
         email: '',
 
         
@@ -93,6 +100,7 @@ export default {
              userData = {
                 firstName: this.firstName,
                 lastName: this.lastName,
+                username: this.username,
                 email: this.email,
                 password: this.password,
                 date_user: new Date()

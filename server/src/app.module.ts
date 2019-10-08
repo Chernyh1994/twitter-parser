@@ -3,11 +3,15 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { MongooseModule } from '@nestjs/mongoose';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
-  imports: [UsersModule,
-    MongooseModule.forRoot('mongodb://localhost/server', { useNewUrlParser: true })],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [
+    MongooseModule.forRoot('mongodb://localhost/server', { useNewUrlParser: true }),
+    AuthModule,
+    UsersModule,
+  ],
+  controllers: [AppController ],
+  providers: [AppService ],
 })
 export class AppModule {}
