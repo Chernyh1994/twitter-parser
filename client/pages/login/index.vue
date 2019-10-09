@@ -7,8 +7,7 @@
   ref="form"
   v-model="valid"
   lazy-validation
-  @submit.prevent="onSubmit"
-  >
+  @submit.prevent="login"  >
     <v-card-title>
        <v-col
           cols="12"
@@ -45,6 +44,7 @@
       <v-btn
           class="ma-2"
           color="primary"
+          type="submit"
         >
           Submit
       </v-btn> 
@@ -63,6 +63,8 @@
 
 
 <script>
+import axios from "axios";
+import {server} from '../../plugins/helper'
 export default {
   layout: 'login',
   data: () => ({
@@ -83,10 +85,24 @@ export default {
     },
   }),
   methods:{
-    onSubmit(){
-      this.$store.dispatch('login')
-      this.$router.push('/')
+  
+    login(e) {
+        let userData ={}
+        if(this.username && this.password) { 
+             userData = {
+                username: this.username,
+                password: this.password,
+            };
+            this.__submitToServer(userData);
+        }   
+    },
+
+    __submitToServer(data) {
+      axios.post(`${server.baseURL}/auth/login`, data).then(data => {
+    //   this.$router.push('/')
+      });
     }
   }
+
 }
 </script>

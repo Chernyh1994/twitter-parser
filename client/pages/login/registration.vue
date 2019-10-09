@@ -110,7 +110,7 @@ export default {
     },
 
     __submitToServer(data) {
-      axios.post(`${server.baseURL}/users/user`, data).then(data => {
+      axios.post(`${server.baseURL}/auth/register`, data).then(data => {
     //   this.$router.push('/')
         });
         }

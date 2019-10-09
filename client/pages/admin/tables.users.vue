@@ -3,21 +3,21 @@
     <template v-slot:default>
       <thead>
         <tr>
-            <th class="text-left">Id</th>
             <th class="text-left">First name</th>
             <th class="text-left">Last name</th>
             <th class="text-left"> Email</th>
-            <th class="text-left"> Password</th>
+            <th class="text-left"> Role</th>
+            <th class="text-left"> Nick Name</th>
             <th></th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="user in users" :key="user._id">
-            <td>{{ user._id }}</td>
             <td>{{ user.firstName }}</td>
             <td>{{ user.lastName }}</td>
             <td>{{ user.email }}</td>
-            <td>{{ user.password }}</td>
+            <td>{{ user.roles }}</td>
+            <td>{{ user.username }}</td>
             <td>
                 <v-btn text color="error" @click="deleteUser(user._id)">
                     Delete
