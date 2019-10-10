@@ -1,29 +1,11 @@
-export const state = () => ({
-    token: null
-})
+import users from './modules/users';
+import twitter from './modules/twitter';
 
-export const mutations = {
-    setToken( state, token) { 
-        state.token = token
-    },
-    clearToken(state) {
-        state.token = null
-    }
-}
+const store = {
+  modules: {
+    users,
+    twitter
+  },
+};
 
-export const action = {
-    login({commit}) {
-        commit('setToken', 'truetoken')
-    },
-    // password({commit}) {
-    //     commit('setToken', 'truetoken')
-    // },
-    inspire({commit}) {
-        commit('clearToken')
-    }
-    
-}
-
-export const getters = {
-    hasToken: s => !!s.token
-}
+export default store

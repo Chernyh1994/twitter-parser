@@ -14,31 +14,44 @@ export class AuthService {
     @InjectModel('User') private readonly userModel: Model<User>,
   ) {}
 
+  async findByUsername(username: string): Promise<User> {
+    return await this.userModel.findOne({username}).exec();
+  }
+
+  async findByEmail(email: string): Promise<User> {
+    return await this.userModel.findOne({email}).exec();
+  }
+
+  isValidEmail(email: string) {
+    if (email) {
+      // tslint:disable-next-line: max-line-length
+      const control = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      return control.test(email);
+    } else { return false; }
+  }
+
   async registration(createUserDto: CreateUserDto): Promise<User> {
     const newUser = await this.userModel(createUserDto);
-    newUser.password = await bcrypt.hash(newUser.password, saltRounds);
-    newUser.roles = ["admin"];
-    return newUser.save();
+    if (this.isValidEmail(newUser.email)) {
+      const userRegisterEmail = await this.findByEmail(newUser.email);
+      const userRegisterName = await this.findByUsername(newUser.username);
+      if (!userRegisterEmail && !userRegisterName) {
+        newUser.password = await bcrypt.hash(newUser.password, saltRounds);
+        newUser.roles = ['admin'];
+        return newUser.save();
+      } else {
+        throw new HttpException('REGISTRATION.USER_ALREADY_REGISTERED', HttpStatus.FORBIDDEN); }
+    }
   }
 
   async login(username, password) {
-    const userFromDb = await this.userModel.findOne({ username: username});
+    const userFromDb = await this.userModel.findOne({ username});
     if (!userFromDb) { throw new HttpException('USERNAME_NOT_FOUND', HttpStatus.NOT_FOUND); }
 
     const isValidPass = await bcrypt.compare(password, userFromDb.password);
-    if (!isValidPass) {
-      return {error: 'Password is incorrect please try again'};
-    }
+    if (!isValidPass) { throw new HttpException('PASSWORD_NOT_FOUND', HttpStatus.NOT_FOUND); }
+
     const token: string = jwt.sign({}, 'rwerwer', {expiresIn: '100h'});
     return {token, message: 'Login successful'};
-
-    // if (isValidPass) {
-    //   const accessToken = await this.jwtService.sign(username, userFromDb.roles);
-    //   return { token: accessToken, user: new UserDto(userFromDb)};
-    // } else {
-    //   throw new HttpException('LOGIN.ERROR', HttpStatus.UNAUTHORIZED);
-    // }
-
   }
-
 }

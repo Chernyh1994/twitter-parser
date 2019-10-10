@@ -18,7 +18,7 @@ import { LoggingInterceptor } from '../common/interceptors/logging.interceptor';
 import { AuthGuard } from '@nestjs/passport';
 
 @Controller('users')
-@UseGuards(AuthGuard('jwt'))
+// @UseGuards(AuthGuard('jwt'))
 @UseInterceptors(LoggingInterceptor)
 export class UsersController {
     constructor(private usersService: UsersService) {}

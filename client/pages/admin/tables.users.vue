@@ -19,8 +19,8 @@
             <td>{{ user.roles }}</td>
             <td>{{ user.username }}</td>
             <td>
-                <v-btn text color="error" @click="deleteUser(user._id)">
-                    Delete
+                <v-btn text color="error" @click="REMOVE_USER(user._id)">
+                  Delete
                 </v-btn>
             </td>
         </tr>
@@ -30,30 +30,30 @@
 </template>
 
 <script>
-import {server} from '../../plugins/helper';
-import axios from "axios";
+import { mapState, mapActions } from 'vuex'
+
   export default {
-    data () {
-      return {
-        users: [ ],
-      }
-    },
  
-    created() {
-        this.fetchUsers();
-    },
-    methods: {
-    fetchUsers() {
-      axios
-        .get(`${server.baseURL}/users/users`)
-        .then(data => (this.users = data.data));
-    },
-    deleteUser(id) {
-      axios.delete(`${server.baseURL}/users/delete?userID=${id}`).then(data => {
-        console.log(data);
-        window.location.reload();
-      });
-    }
+  computed: mapState({
+    users: state => state.users.all    
+  }),
+
+  methods: mapActions('users', ['GET_USER', 'REMOVE_USER' ]),
+  
+
+  mounted() {
+    this.$store.dispatch('users/GET_USER');
+    // this.$store.dispatch('users/REMOVE_USER');
   }
+
+
+    // methods: {
+    // deleteUser(id) {
+    //   axios.delete(`${server.baseURL}/users/delete?userID=${id}`).then(data => {
+    //     console.log(data);
+    //     window.location.reload();
+    //   });
+    // }
+    // }
   }
 </script>

@@ -11,7 +11,7 @@ import { Login } from './interfaces/login.interface';
 export class AuthController {
   constructor(private readonly authService: AuthService, private readonly userService: UsersService ) {}
 
-  @Post('/register')
+  @Post('register')
   @HttpCode(HttpStatus.OK)
   public async registration(@Response() res,  @Body() createUserDto: CreateUserDto) {
       const result = await this.authService.registration(createUserDto);
