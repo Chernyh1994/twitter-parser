@@ -14,6 +14,14 @@ const getters = {
     USERS: state => {
         return state.allUsers;
     },
+
+    isAuthenticated(state) {
+        return state.auth.loggedIn
+      },
+    
+      loggedInUser(state) {
+        return state.auth.user
+    }
 };
 
 const mutations = {
@@ -57,12 +65,12 @@ const actions = {
             .catch(error => console.log(error));
     },
 
-    LOGIN_USER:  async ({dispatch}, payload) => {
-        await axios
-            .post('http://localhost:5000/auth/login', payload)
-            .then(res => dispatch('REGISTER_USER', res.data))
-            .catch(error => console.log(error));
-    }
+    // LOGIN_USER:  async ({dispatch}, payload) => {
+    //     await axios
+    //         .post('http://localhost:5000/auth/login', payload)
+    //         .then(res => dispatch('REGISTER_USER', res.data))
+    //         .catch(error => console.log(error));
+    // }
 };
 
 const namespaced = true

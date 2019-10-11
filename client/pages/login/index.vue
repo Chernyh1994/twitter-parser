@@ -7,7 +7,7 @@
   ref="form"
   v-model="valid"
   lazy-validation
-  @submit.prevent="LOGIN_USER($data)"
+  @submit.prevent="login"
   >
     <v-card-title>
        <v-col
@@ -88,15 +88,23 @@ export default {
     },
   }),
   
-
   methods:{
-    login: function () {
-      const { username, password } = this
-      this.$store.dispatch(AUTH_REQUEST, { username, password }).then(() => {
-      this.$router.push('/')
-      })
+      async login() {
+      try {
+        await this.$auth.loginWith('local', {
+          data: {
+            username: this.username,
+            password: this.password
+          }
+        })
+
+        this.$router.push('/')
+      } catch (e) {
+        this.error = e.response.data.message
+      }
+  
     },
-    ...mapActions('users', ['LOGIN_USER']),
+
   }
   // methods:{
   
