@@ -35,14 +35,14 @@ import { mapState, mapActions } from 'vuex'
   export default {
  
   computed: mapState({
-    users: state => state.users.all    
+    users: state => state.users.allUsers    
   }),
 
-  methods: mapActions('users', ['GET_USER', 'REMOVE_USER' ]),
+  methods: mapActions('users', ['GET_USERS', 'REMOVE_USER' ]),
   
 
   mounted() {
-    this.$store.dispatch('users/GET_USER');
+    this.$store.dispatch('users/GET_USERS');
     // this.$store.dispatch('users/REMOVE_USER');
   }
 

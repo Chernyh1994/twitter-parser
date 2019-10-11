@@ -7,7 +7,8 @@
   ref="form"
   v-model="valid"
   lazy-validation
-  @submit.prevent="login"  >
+  @submit.prevent="LOGIN_USER($data)"
+  >
     <v-card-title>
        <v-col
           cols="12"
@@ -63,14 +64,16 @@
 
 
 <script>
-import axios from "axios";
-import {server} from '../../plugins/helper'
+import {mapActions} from 'vuex'
+
 export default {
+
   layout: 'login',
+
   data: () => ({
     valid: false,
-    username: '',
     show1: false,
+    username: '',
     password: '',
 
     nameRules: [
@@ -84,25 +87,36 @@ export default {
       emailMatch: () => ('The email and password you entered don\'t match'),
     },
   }),
-  methods:{
   
-    login(e) {
-        let userData ={}
-        if(this.username && this.password) { 
-             userData = {
-                username: this.username,
-                password: this.password,
-            };
-            this.__submitToServer(userData);
-        }   
-    },
 
-    __submitToServer(data) {
-      axios.post(`${server.baseURL}/auth/login`, data).then(data => {
-    //   this.$router.push('/')
-      });
-    }
+  methods:{
+    login: function () {
+      const { username, password } = this
+      this.$store.dispatch(AUTH_REQUEST, { username, password }).then(() => {
+      this.$router.push('/')
+      })
+    },
+    ...mapActions('users', ['LOGIN_USER']),
   }
+  // methods:{
+  
+  //   login(e) {
+  //       let userData ={}
+  //       if(this.username && this.password) { 
+  //            userData = {
+  //               username: this.username,
+  //               password: this.password,
+  //           };
+  //           this.__submitToServer(userData);
+  //       }   
+  //   },
+
+    // __submitToServer(data) {
+    //   axios.post(`${server.baseURL}/auth/login`, data).then(data => {
+    // //   this.$router.push('/')
+    //   });
+    // }
+  // }
 
 }
 </script>

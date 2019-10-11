@@ -7,7 +7,8 @@
         ref="form"
         v-model="valid"
         lazy-validation
-        @submit.prevent="createUser"
+        form
+        @submit.prevent="ADD_USER($data)"
     >
 
         <v-text-field
@@ -49,9 +50,9 @@
 
         <v-card-actions>
             <v-btn
-                color="primary"
-                class="mr-4"
-                type="submit"
+            color="primary"
+            class="mr-4"
+            type="submit"
             >
                 Create
             </v-btn>
@@ -62,20 +63,19 @@
 </template>
 
 <script>
-import axios from "axios";
-import {server} from '../../plugins/helper'
+import { mapState, mapActions, mapMutations } from 'vuex'
+
 export default {
   layout: 'login',
     data() {
         return{
         show1: false,
         valid: true,
-        password: '',
         firstName: '',
         lastName: '',
         username: '',
         email: '',
-
+        password: '',
         
         emailRules: [
             v => !!v || 'E-mail is required',
@@ -90,37 +90,15 @@ export default {
      }
   },
 
-   created() {
-    this.date_user = new Date().toLocaleDateString();
-  },
-  methods: {
-    createUser(e) {
-      let userData ={}
-           console.log(this.password)
+ computed: mapState({
+    form: state => state.users.form    
+  }), 
 
-      if(this.emailRules){
-        if(this.rules){
-          if(this.firstName && this.lastName && this.email && this.password) { 
-            userData = {
-              firstName: this.firstName,
-              lastName: this.lastName,
-              username: this.username,
-              email: this.email,
-              password: this.password,
-              date_user: new Date()
-            };
-          this.__submitToServer(userData);
-          }  
-        }
-      } 
-    },
-
-    __submitToServer(data) {
-      axios.post(`${server.baseURL}/auth/register`, data).then(data => {
-    //   this.$router.push('/')
-      });
-    }
+  methods:{
+    ...mapActions('users', ['ADD_USER']),
+    ...mapMutations('users', ['RESET_FORM'])
   }
+
 }
 </script>
 

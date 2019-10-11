@@ -37,10 +37,16 @@ export default {
   buildModules: [
     '@nuxtjs/vuetify',
   ],
+
+  auth: {
+    // Options
+  },
   /*
   ** Nuxt.js modules
   */
   modules: [
+    '@nuxtjs/axios',
+    '@nuxtjs/auth',
     ['nuxt-gmaps', {
       key: ''
     }]
