@@ -8,7 +8,8 @@
         v-model="valid"
         lazy-validation
         form
-        @submit.prevent="ADD_USER($data)"
+        method="post"
+        @submit.prevent="register"
     >
 
         <v-text-field
@@ -57,16 +58,24 @@
                 Create
             </v-btn>
         </v-card-actions>
+        <div>
+          Already got an account? <nuxt-link to="/auth">Login</nuxt-link>
+        </div>
 
     </v-form>
   </v-card>
 </template>
 
 <script>
-import { mapState, mapActions, mapMutations } from 'vuex'
+// import { mapState, mapActions, mapMutations } from 'vuex'
 
 export default {
   layout: 'login',
+
+  components: {
+    
+  },
+
     data() {
         return{
         show1: false,
@@ -76,7 +85,8 @@ export default {
         username: '',
         email: '',
         password: '',
-        
+        error: null,
+
         emailRules: [
             v => !!v || 'E-mail is required',
             v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
@@ -90,15 +100,30 @@ export default {
      }
   },
 
- computed: mapState({
-    form: state => state.users.form    
-  }), 
+methods: {
+    async register() {
+      try {
+        await this.$axios.post('auth/register', {
+          firstName: this.firstName,
+          lastName: this.lastName,
+          username: this.username,
+          email: this.email,
+          password: this.password
+        })
 
-  methods:{
-    ...mapActions('users', ['ADD_USER']),
-    ...mapMutations('users', ['RESET_FORM'])
+        await this.$auth.loginWith('local', {
+          data: {
+            username: this.username,
+            password: this.password
+          },
+        })
+
+        this.$router.push('/')
+      } catch (e) {
+        this.error = e.response.data.message
+      }
+    }
   }
-
 }
 </script>
 

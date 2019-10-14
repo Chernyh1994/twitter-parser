@@ -3,12 +3,12 @@
     max-width="544"
     class="mx-auto"
   >
+
   <v-form
   ref="form"
   v-model="valid"
   lazy-validation
-  @submit.prevent="login"
-  >
+@submit.prevent="LOGIN_USER($data)"  >
     <v-card-title>
        <v-col
           cols="12"
@@ -57,14 +57,19 @@
           Cancel
       </v-btn> 
     </v-card-actions>
-    <v-card-text>New to Test(JSN)? <NuxtLink to='/login/registration'> Create an account.</NuxtLink>or</v-card-text>
+    <v-card-text>New to Test(JSN)? <NuxtLink to='/auth/registration'> Create an account.</NuxtLink>or</v-card-text>
   </v-form>
+        <tbody>
+
+            <td>{{ token }}</td>
+         
+      </tbody>
   </v-card>
 </template>
 
 
 <script>
-import {mapActions} from 'vuex'
+import {mapActions, mapState} from 'vuex'
 
 export default {
 
@@ -88,43 +93,47 @@ export default {
     },
   }),
   
-  methods:{
-      async login() {
-      try {
-        await this.$auth.loginWith('local', {
-          data: {
-            username: this.username,
-            password: this.password
-          }
-        })
-
-        this.$router.push('/')
-      } catch (e) {
-        this.error = e.response.data.message
-      }
-  
-    },
-
-  }
   // methods:{
+  //     async login() {
+  //     try {
+  //       await this.$auth.loginWith('local', {
+  //         data: {
+  //           username: this.username,
+  //           password: this.password
+  //         }
+  //       })
+
+  //       this.$router.push('/')
+  //     } catch (e) {
+  //       this.error = e.response.data.message
+  //     }
   
-  //   login(e) {
-  //       let userData ={}
-  //       if(this.username && this.password) { 
-  //            userData = {
-  //               username: this.username,
-  //               password: this.password,
-  //           };
-  //           this.__submitToServer(userData);
-  //       }   
   //   },
 
-    // __submitToServer(data) {
-    //   axios.post(`${server.baseURL}/auth/login`, data).then(data => {
-    // //   this.$router.push('/')
-    //   });
-    // }
   // }
+
+  computed: mapState({
+    token: state => state.users.token
+  }),
+  methods:{
+    ...mapActions('users', ['LOGIN_USER']),
+    login(e) {
+        let userData ={}
+        if(this.username && this.password) { 
+             userData = {
+                username: this.username,
+                password: this.password,
+            };
+            this.__submitToServer(userData);
+        }   
+    },
+
+    __submitToServer(data) {
+      axios.post(`${server.baseURL}/auth/login`, data).then(data => {
+    //   this.$router.push('/')
+      });
+    }
+  }
 
 }
 </script>

@@ -38,36 +38,29 @@ export default {
     '@nuxtjs/vuetify',
   ],
 
-  axios: {
-    baseURL: 'http://localhost:5000'
-  },
+  // axios: {
+  //   baseURL: 'http://localhost:5000'
+  // },
 
-  auth: {
-    strategies:{
-      local:{
-        endpoints: {
-          login: { url: '/auth/login', method: 'post', propertyName: 'token' },
-          user: { url: '/users/users', method: 'get', propertyName: 'users' },
-          tokenRequired: true,
-          tokenType: 'Bearer'
-        },
-        facebook: {
-          client_id: 'your facebook app id',
-          userinfo_endpoint: 'https://graph.facebook.com/v2.12/me?fields=about,name,picture{url},email',
-          scope: ['public_profile', 'email']
-        },
-        google: {
-          client_id: 'your gcloud oauth app client id'
-        },
-      }
-    }
-  },
+  // auth: {
+  //   strategies:{
+  //     local:{
+  //       endpoints: {
+  //         login: { url: '/auth/login', method: 'post', propertyName: 'token' },
+  //         user: { url: '/auth/user', method: 'get', propertyName: 'user' },
+  //         logout: false
+  //       },
+  //       tokenRequired: true,
+  //       tokenType: 'Bearer',
+  //     }
+  //   }
+  // },
   /*
   ** Nuxt.js modules
   */
   modules: [
-    '@nuxtjs/axios',
-    '@nuxtjs/auth',
+    // '@nuxtjs/axios',
+    // '@nuxtjs/auth',
     ['nuxt-gmaps', {
       key: ''
     }]

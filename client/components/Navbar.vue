@@ -2,6 +2,7 @@
     <div>
 
         <v-navigation-drawer
+            v-if="isAuthenticated"
             color = "primary"
             v-model="drawer"
             :mini-variant="miniVariant"
@@ -33,8 +34,8 @@
             fixed
             app
         >
-            <v-app-bar-nav-icon class="white--text headline" @click.stop="drawer = !drawer" />
-                <v-btn
+            <v-app-bar-nav-icon v-if="isAuthenticated" class="white--text headline" @click.stop="drawer = !drawer" />
+                <v-btn v-if="isAuthenticate"
                     class="white--text headline"
                     icon
                     @click.stop="miniVariant = !miniVariant"
@@ -44,11 +45,15 @@
             <v-toolbar-title class="white--text headline" v-text="title" />
             <v-spacer />
             
-            <nuxt-link to="/login">
-                <v-avatar color="#26C4DA">
-                    <span class="white--text headline">CJ</span>
-                </v-avatar>
-            </nuxt-link>
+             <div>
+              <v-btn class="ma-4" tile outlined color="white" small to="/auth/registration" v-if="isAuthenticated">
+                Prifil
+              </v-btn>
+              <nuxt-link to="/auth" class="navbar-item white--text" v-if="!isAuthenticated"> Login In </nuxt-link>
+              <v-btn class="ma-4" tile outlined color="white" small to="/auth/registration" >
+                Register
+              </v-btn>
+            </div>
 
         </v-app-bar>
 
@@ -56,7 +61,10 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
+    computed: mapGetters(['isAuthenticated', 'loggedInUser']),
     
   methods: {
     inspire() {
