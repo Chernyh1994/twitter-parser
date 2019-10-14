@@ -7,5 +7,5 @@ export const UserSchema = new mongoose.Schema({
     email: String,
     password: String,
     userId: String,
-    roles: Array<string>(),
+    role: String,
 });

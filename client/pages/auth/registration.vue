@@ -9,8 +9,7 @@
         lazy-validation
         form
         method="post"
-        @submit.prevent="register"
-    >
+        @submit.prevent="ADD_USER($data)"    >
 
         <v-text-field
         v-model="firstName"
@@ -67,7 +66,7 @@
 </template>
 
 <script>
-// import { mapState, mapActions, mapMutations } from 'vuex'
+import { mapState, mapActions, mapMutations } from 'vuex'
 
 export default {
   layout: 'login',
@@ -101,28 +100,29 @@ export default {
   },
 
 methods: {
-    async register() {
-      try {
-        await this.$axios.post('auth/register', {
-          firstName: this.firstName,
-          lastName: this.lastName,
-          username: this.username,
-          email: this.email,
-          password: this.password
-        })
+   ...mapActions('users', ['ADD_USER']),
+    // async register() {
+    //   try {
+    //     await this.$axios.post('auth/register', {
+    //       firstName: this.firstName,
+    //       lastName: this.lastName,
+    //       username: this.username,
+    //       email: this.email,
+    //       password: this.password
+    //     })
 
-        await this.$auth.loginWith('local', {
-          data: {
-            username: this.username,
-            password: this.password
-          },
-        })
+    //     await this.$auth.loginWith('local', {
+    //       data: {
+    //         username: this.username,
+    //         password: this.password
+    //       },
+    //     })
 
-        this.$router.push('/')
-      } catch (e) {
-        this.error = e.response.data.message
-      }
-    }
+    //     this.$router.push('/')
+    //   } catch (e) {
+    //     this.error = e.response.data.message
+    //   }
+    // }
   }
 }
 </script>

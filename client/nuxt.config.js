@@ -63,7 +63,8 @@ export default {
     // '@nuxtjs/auth',
     ['nuxt-gmaps', {
       key: ''
-    }]
+    }],
+    'nuxt-vuex-localstorage'
   ],
   /*
   ** vuetify module configuration

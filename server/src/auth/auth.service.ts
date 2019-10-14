@@ -37,7 +37,7 @@ export class AuthService {
       const userRegisterName = await this.findByUsername(newUser.username);
       if (!userRegisterEmail && !userRegisterName) {
         newUser.password = await bcrypt.hash(newUser.password, saltRounds);
-        newUser.roles = ['admin'];
+        newUser.role = 'admin';
         return newUser.save();
       } else {
         throw new HttpException('REGISTRATION.USER_ALREADY_REGISTERED', HttpStatus.FORBIDDEN); }
@@ -51,7 +51,7 @@ export class AuthService {
     const isValidPass = await bcrypt.compare(password, userFromDb.password);
     if (!isValidPass) { throw new HttpException('PASSWORD_NOT_FOUND', HttpStatus.NOT_FOUND); }
 
-    const token: string = jwt.sign({}, 'rwerwer', {expiresIn: '100h'});
+    const token: string = jwt.sign({id: userFromDb._id, role: userFromDb.role}, 'rwerwer', {expiresIn: '100h'});
     return {token
       // , message: 'Login successful'
     };
