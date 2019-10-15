@@ -8,7 +8,7 @@
   ref="form"
   v-model="valid"
   lazy-validation
-@submit.prevent="LOGIN_USER($data)"  >
+  @submit.prevent="login"  >
     <v-card-title>
        <v-col
           cols="12"
@@ -59,17 +59,12 @@
     </v-card-actions>
     <v-card-text>New to Test(JSN)? <NuxtLink to='/auth/registration'> Create an account.</NuxtLink>or</v-card-text>
   </v-form>
-        <tbody>
-
-            <td>{{ token }}</td>
-         
-      </tbody>
   </v-card>
 </template>
 
 
 <script>
-import {mapActions, mapState} from 'vuex'
+import {mapActions} from 'vuex'
 
 export default {
 
@@ -112,27 +107,20 @@ export default {
 
   // }
 
-  computed: mapState({
-    token: state => state.users.token
-  }),
+
   methods:{
     ...mapActions('users', ['LOGIN_USER']),
-    login(e) {
-        let userData ={}
-        if(this.username && this.password) { 
-             userData = {
-                username: this.username,
-                password: this.password,
-            };
-            this.__submitToServer(userData);
-        }   
+    async  login(e) {
+      try { 
+        await this.$store.dispatch('users/LOGIN_USER',{ 
+          username: this.username,
+          password: this.password,    
+        })
+        // this.$router.push('/')    
+      } catch (e) {
+        this.error = e.response.data.message
+      }
     },
-
-    __submitToServer(data) {
-      axios.post(`${server.baseURL}/auth/login`, data).then(data => {
-    //   this.$router.push('/')
-      });
-    }
   }
 
 }

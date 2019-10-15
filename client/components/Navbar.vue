@@ -2,7 +2,7 @@
     <div>
 
         <v-navigation-drawer
-            v-if="isAuthenticated"
+            v-if="ROLE"
             color = "primary"
             v-model="drawer"
             :mini-variant="miniVariant"
@@ -11,20 +11,51 @@
             app
         >
             <v-list>
-                <v-list-item
-                v-for="(item, i) in items"
-                :key="i"
-                :to="item.to"
-                router
-                exact
-                >
+
+                <v-list-item exact to="/" v-if="ROLE">
                     <v-list-item-action>
-                        <v-icon>{{ item.icon }}</v-icon>
+                        <v-icon>mdi-twitter-circle mdi-light</v-icon>
                     </v-list-item-action>
                     <v-list-item-content>
-                        <v-list-item-title class="white--text headline" v-text="item.title" />
+                        <v-list-item-title class="white--text headline" v-text="'All Twitter'" />
                      </v-list-item-content>
                 </v-list-item>
+
+                <v-list-item exact to="/inspire" v-if="ROLE">
+                    <v-list-item-action>
+                        <v-icon>mdi-file-lock mdi-light</v-icon>
+                    </v-list-item-action>
+                    <v-list-item-content>
+                        <v-list-item-title class="white--text headline" v-text="'Super Secret'" />
+                     </v-list-item-content>
+                </v-list-item>
+
+                <v-list-item exact to="/admin/settings" v-if="ROLE === 'admin'">
+                    <v-list-item-action>
+                        <v-icon>mdi-google-maps mdi-light</v-icon>
+                    </v-list-item-action>
+                    <v-list-item-content>
+                        <v-list-item-title class="white--text headline" v-text="'Maps of Twitter'" />
+                     </v-list-item-content>
+                </v-list-item>
+
+                <v-list-item exact to="/admin/tables.users" v-if="ROLE === 'admin'">
+                    <v-list-item-action>
+                        <v-icon>mdi-account-multiple mdi-light</v-icon>
+                    </v-list-item-action>
+                    <v-list-item-content>
+                        <v-list-item-title class="white--text headline" v-text="'Users'" />
+                     </v-list-item-content>
+                </v-list-item>
+
+                <v-list-item exact to="/admin" v-if="ROLE === 'admin'">
+                    <v-list-item-action>
+                        <v-icon>mdi-table-edit mdi-light</v-icon>
+                    </v-list-item-action>
+                    <v-list-item-content>
+                        <v-list-item-title class="white--text headline" v-text="'Edit Twitter'" />
+                     </v-list-item-content>
+                </v-list-item>                                                                
             </v-list>
         </v-navigation-drawer>
 
@@ -34,8 +65,8 @@
             fixed
             app
         >
-            <v-app-bar-nav-icon v-if="isAuthenticated" class="white--text headline" @click.stop="drawer = !drawer" />
-                <v-btn v-if="isAuthenticate"
+            <v-app-bar-nav-icon v-if="ROLE" class="white--text headline" @click.stop="drawer = !drawer" />
+                <v-btn v-if="ROLE"
                     class="white--text headline"
                     icon
                     @click.stop="miniVariant = !miniVariant"
@@ -46,11 +77,14 @@
             <v-spacer />
             
              <div>
-              <v-btn class="ma-4" tile outlined color="white" small to="/auth/registration" v-if="isAuthenticated">
-                Prifil
+              <v-btn class="ma-4" tile outlined color="white" small to="/" v-if="ROLE" @click="CLEAR_ROLE">
+                Get out
               </v-btn>
-              <nuxt-link to="/auth" class="navbar-item white--text" v-if="!isAuthenticated"> Login In </nuxt-link>
-              <v-btn class="ma-4" tile outlined color="white" small to="/auth/registration" >
+              <v-btn class="ma-4" tile outlined color="white" small to="/profil" v-if="ROLE">
+                Profil
+              </v-btn>
+              <nuxt-link to="/auth" class="navbar-item white--text" v-if="!ROLE"> Login In </nuxt-link>
+              <v-btn class="ma-4" tile outlined color="white" small to="/auth/registration" v-if="!ROLE">
                 Register
               </v-btn>
             </div>
@@ -61,34 +95,19 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 
 export default {
-    computed: mapGetters(['isAuthenticated', 'loggedInUser']),
-  
-  methods: {
-    inspire() {
-    }
-  },
+    computed: mapGetters('users',['ROLE']),
+    methods:{
+      ...mapMutations('users',['CLEAR_ROLE'])
+    },
 
   data () {
     return {
       clipped: true,
       drawer: false,
       fixed: false,
-      items: [
-        {
-          icon: 'mdi-twitter-circle mdi-light',
-          title: 'All Twitter',
-          to: '/',
-        },
-        {
-          icon: 'mdi-account-key mdi-light',
-          title: 'Inspire',
-          to: '/inspire',
-          emit: console.log('dddddddddd')
-        }
-      ],
       miniVariant: true,
       right: true,
       rightDrawer: false,

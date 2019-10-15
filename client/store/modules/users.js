@@ -17,17 +17,9 @@ const getters = {
         return state.allUsers;
     },
 
-    TOKEN: state => {
-        return state.token
+    ROLE: state => {
+        return state.role;
     }
-
-    // isAuthenticated(state) {
-    //     return state.auth.loggedIn
-    //   },
-    
-    //   loggedInUser(state) {
-    //     return state.auth.user
-    // }
 };
 
 const mutations = {
@@ -36,15 +28,14 @@ const mutations = {
     },
 
     REGISTER_USER: (state, data) => {
-        console.log(data)
         const token = jwt_decode(data.token);
-        console.log(token)
-        localStorage.setItem('role', token.role)
-        state.token = data
+        localStorage.setItem('role', token.role);
+        state.token = data;
     },
 
-    RESET_FORM: (state, formState) => {
-        state.form = formState
+    CLEAR_ROLE: () => {
+        localStorage.removeItem('role');
+        localStorage.removeItem('token');
     }
 };
 
