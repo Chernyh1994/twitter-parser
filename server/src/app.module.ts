@@ -4,12 +4,14 @@ import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AuthModule } from './auth/auth.module';
+import { TwitterModule } from './twitter/twitter.module';
 
 @Module({
   imports: [
     MongooseModule.forRoot('mongodb://localhost/server', { useNewUrlParser: true }),
     AuthModule,
     UsersModule,
+    TwitterModule,
   ],
   controllers: [AppController ],
   providers: [AppService ],

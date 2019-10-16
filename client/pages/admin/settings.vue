@@ -30,6 +30,7 @@
 
 <script>
 import Search from '~/components/Search'
+
 export default {
     components: {
         Search
@@ -58,7 +59,7 @@ export default {
 
     clusterStyle: [
         {
-          url: "https://googlemaps.github.io/js-marker-clusterer/images/m3.png",
+          url:"https://googlemaps.github.io/js-marker-clusterer/images/m2.png",
           width: 56,
           height: 56,
           textColor: "#fff"

@@ -1,14 +1,13 @@
 <template>
     <div>
-
         <v-navigation-drawer
-            v-if="ROLE"
-            color = "primary"
-            v-model="drawer"
-            :mini-variant="miniVariant"
-            :clipped="clipped"
-            fixed
-            app
+        v-if="ROLE"
+        color = "primary"
+        v-model="drawer"
+        :mini-variant="miniVariant"
+        :clipped="clipped"
+        fixed
+        app
         >
             <v-list>
 
@@ -60,16 +59,16 @@
         </v-navigation-drawer>
 
         <v-app-bar
-            color = "primary"
-            :clipped-left="clipped"
-            fixed
-            app
+        color = "primary"
+        :clipped-left="clipped"
+        fixed
+        app
         >
             <v-app-bar-nav-icon v-if="ROLE" class="white--text headline" @click.stop="drawer = !drawer" />
                 <v-btn v-if="ROLE"
-                    class="white--text headline"
-                    icon
-                    @click.stop="miniVariant = !miniVariant"
+                class="white--text headline"
+                icon
+                @click.stop="miniVariant = !miniVariant"
                 >
                     <v-icon>mdi-{{ `chevron-${miniVariant ? 'right' : 'left'}` }}</v-icon>
                 </v-btn>
@@ -78,7 +77,7 @@
             
              <div>
               <v-btn class="ma-4" tile outlined color="white" small to="/" v-if="ROLE" @click="CLEAR_ROLE">
-                Get out
+                Sign out
               </v-btn>
               <v-btn class="ma-4" tile outlined color="white" small to="/profil" v-if="ROLE">
                 Profil
@@ -99,19 +98,20 @@ import { mapGetters, mapMutations } from 'vuex'
 
 export default {
     computed: mapGetters('users',['ROLE']),
+
     methods:{
       ...mapMutations('users',['CLEAR_ROLE'])
     },
 
   data () {
     return {
-      clipped: true,
-      drawer: false,
-      fixed: false,
-      miniVariant: true,
-      right: true,
-      rightDrawer: false,
-      title: 'MyTest'
+        clipped: true,
+        drawer: false,
+        fixed: false,
+        miniVariant: true,
+        right: true,
+        rightDrawer: false,
+        title: 'MyTest'
     }
   }
 }

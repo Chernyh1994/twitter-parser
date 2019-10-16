@@ -52,8 +52,6 @@ export class AuthService {
     if (!isValidPass) { throw new HttpException('PASSWORD_NOT_FOUND', HttpStatus.NOT_FOUND); }
 
     const token: string = jwt.sign({id: userFromDb._id, role: userFromDb.role}, 'rwerwer', {expiresIn: '100h'});
-    return {token
-      // , message: 'Login successful'
-    };
+    return {token};
   }
 }
