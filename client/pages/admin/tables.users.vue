@@ -37,8 +37,6 @@ import { mapState, mapActions } from 'vuex'
   computed: mapState({
     users: state => state.users.allUsers    
   }),
-
-  methods: mapActions('users', ['GET_USERS', 'REMOVE_USER' ]),
   
 
   mounted() {

@@ -24,11 +24,10 @@ export class AuthController {
   @Post('login')
   @HttpCode(HttpStatus.OK)
   public async login(@Response() res, @Body() login: Login) {
-    console.log('result');
     const result = await this.authService.login(login.username, login.password);
     if (!result) {
       return res.status(HttpStatus.BAD_REQUEST).json(result);
-      }
-      return res.status(HttpStatus.OK).json(result);
+    }
+    return res.status(HttpStatus.OK).json(result);
   }
 }

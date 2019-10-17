@@ -5,8 +5,7 @@
    
     >
       <v-col
-        v-for="k in 5"
-        :key="k"
+      v-for="tweet in tweets" :key="tweet._id"
         md="4"
       >
          <v-card
@@ -39,7 +38,7 @@
             </v-card-title>
 
             <v-card-text class="headline font-weight-bold">
-              "Turns out semicolon-less style is easier and safer in TS because most gotcha edge cases are type invalid as well."
+              "{{ tweet.text }}"
             </v-card-text>
 
             <v-card-actions>
@@ -52,7 +51,7 @@
                 </v-list-item-avatar>
 
                 <v-list-item-content>
-                  <v-list-item-title>Evan You</v-list-item-title>
+                  <v-list-item-title>{{ tweet.username }}</v-list-item-title>
                 </v-list-item-content>
 
                 <v-row
@@ -65,10 +64,10 @@
                     >
                         <v-icon >mdi-heart</v-icon>
                     </v-btn>                  
-                    <span class="subheading mr-2">256</span>
+                    <span class="subheading mr-2">{{ tweet.favoriteCount }}</span>
                     <span class="mr-1">·</span>
                     <v-icon class="mr-1">mdi-share-variant</v-icon>
-                    <span class="subheading">45</span>
+                    <span class="subheading">{{ tweet.retweetCount }}</span>
                 </v-row>
               </v-list-item>
             </v-card-actions>
@@ -82,11 +81,24 @@
 </template>
 
 <script>
-import Pagination from '~/components/Paginations'
+import { mapState, mapActions } from 'vuex';
+import Pagination from '~/components/Paginations';
+
   export default {
     components: {
       Pagination
     },
- 
+
+        computed: mapState({
+      tweets: state => state.twitter.allTweets    
+    }),
+
+    methods: mapActions('twitter', [' GET_TWEETS']),
+  
+
+    mounted() {
+      this.$store.dispatch('twitter/GET_TWEETS');
+    }
+    
   }
 </script>
