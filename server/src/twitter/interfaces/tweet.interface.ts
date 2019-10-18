@@ -5,4 +5,5 @@ export interface Tweet extends Document {
      username: string;
      retweetCount: number;
      favoriteCount: number;
+     profileImages: string;
 }

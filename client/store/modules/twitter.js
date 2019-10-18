@@ -26,6 +26,13 @@ const actions = {
             })
             .catch(error => console.log(error));
     },
+
+    ADD_TWEETS:  async ({dispatch}, payload) => {
+        await axios
+            .post('http://localhost:5000/twitter/twitter', payload)
+            .then(res => dispatch( res.data, console.log('dddddddddddddddddd',payload)))
+            .catch(error => console.log(error));
+    },
 };
 
 const namespaced = true;

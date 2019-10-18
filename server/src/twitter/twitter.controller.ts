@@ -1,4 +1,4 @@
-import { Controller, HttpStatus, Get, Res, Body } from '@nestjs/common';
+import { Controller, HttpStatus, Get, Res, Body, Post } from '@nestjs/common';
 import { TwitterService } from './twitter.service';
 import { CreateTweetDto } from './dto/create-tweet';
 
@@ -6,9 +6,9 @@ import { CreateTweetDto } from './dto/create-tweet';
 export class TwitterController {
     constructor(private twitterService: TwitterService) {}
 
-    @Get('twitter')
-    async Twit(@Res() res,   @Body() createTweetDto: CreateTweetDto) {
-        const twitter = await this.twitterService.getBla(createTweetDto);
+    @Post('twitter')
+    async Tweet(@Res() res,   @Body() createTweetDto: CreateTweetDto) {
+        const twitter = await this.twitterService.addNewTweets(createTweetDto);
         return res.status(HttpStatus.OK).json(twitter);
     }
 

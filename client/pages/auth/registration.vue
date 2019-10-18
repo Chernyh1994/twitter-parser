@@ -66,7 +66,7 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapMutations } from 'vuex'
+import {  mapActions,  } from 'vuex'
 
 export default {
   layout: 'login',

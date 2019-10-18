@@ -5,4 +5,5 @@ export const TweetSchema = new mongoose.Schema({
     username: String,
     retweetCount: Number,
     favoriteCount: Number,
+    profileImages: String,
 });

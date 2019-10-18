@@ -18,25 +18,30 @@ export class TwitterService {
             access_token_secret: '',
         });
 
-        this.params = {
-            q: 'akshay',
-            count: 10,
-            result_type: 'popular',
-            geocode: {
-                latitude: 50.450157,
-                longitude: 30.533420,
-                radius: '2km',
-            },
-        };
+
+        // this.params = {
+        //     q: '',
+        //     geocode: '47.857589,35.104832,10km',
+        //     count: 1,
+        //     // result_type: 'popular',
+        // };
     }
 
     async findAllTweet(): Promise<Tweet[]> {
         return await this.tweetModel.find().exec();
     }
 
-    async getBla(createTweetDto: CreateTweetDto): Promise<any> {
+    async addNewTweets(createTweetDto: CreateTweetDto): Promise<any> {
 
-        const tweets = await this.client.get('search/tweets', this.params);
+        // const params = {
+        //     q: '',
+        //     geocode: '47.857589,35.104832,10km',
+        //     count: 1,
+        // };
+
+        console.log(createTweetDto,'dddddddddddddddddddd')
+        const tweets = await this.client.get('search/tweets', createTweetDto );
+
         return await Promise.all(
             tweets.statuses.map(async (tweet) => {
                 const newTweet = await this.tweetModel(createTweetDto);
@@ -44,7 +49,10 @@ export class TwitterService {
                 newTweet.username = tweet.user.name;
                 newTweet.retweetCount = tweet.retweet_count;
                 newTweet.favoriteCount = tweet.favorite_count;
+                newTweet.profileImages = tweet.user.profile_image_url_https;
+
                 newTweet.save();
+                console.log(newTweet)
             }),
         );
     }
