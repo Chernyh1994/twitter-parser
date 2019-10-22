@@ -44,10 +44,8 @@ export class UsersController {
     @UseGuards(RolesGuard)
     async deleteUser(@Res() res, @Query('userID', new ValidateObjectId()) userID) {
         const deletedUser = await this.usersService.deleteUser(userID);
+        const users = await this.usersService.findAll();
         if (!deletedUser) {throw new NotFoundException('user does not exist!'); }
-        return res.status(HttpStatus.OK).json({
-            message: 'user has been deleted!',
-            user: deletedUser,
-        });
+        return res.status(HttpStatus.OK).json(users);
     }
 }

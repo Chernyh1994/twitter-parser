@@ -3,7 +3,7 @@
     max-width="544"
     class="mx-auto"
   >
-
+  <Notification :message="error" v-if="error"/>
   <v-form
   ref="form"
   v-model="valid"
@@ -64,7 +64,8 @@
 
 
 <script>
-import {mapActions} from 'vuex'
+import {mapActions} from 'vuex';
+import Notification from '~/components/Notification';
 
 export default {
 
@@ -73,6 +74,7 @@ export default {
   data: () => ({
     valid: false,
     show1: false,
+    error: null,
     username: '',
     password: '',
 
@@ -88,26 +90,6 @@ export default {
     },
   }),
   
-  // methods:{
-  //     async login() {
-  //     try {
-  //       await this.$auth.loginWith('local', {
-  //         data: {
-  //           username: this.username,
-  //           password: this.password
-  //         }
-  //       })
-
-  //       this.$router.push('/')
-  //     } catch (e) {
-  //       this.error = e.response.data.message
-  //     }
-  
-  //   },
-
-  // }
-
-
   methods:{
     ...mapActions('users', ['LOGIN_USER']),
     async  login(e) {

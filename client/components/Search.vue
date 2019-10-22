@@ -68,7 +68,7 @@ import {mapActions} from 'vuex';
             count: this.count, 
             geocode: this.rad,   
           })
-          // this.$router.push('/')    
+          this.$router.push('/')    
         } catch (e) {
           this.error = e.response.data.message
         }

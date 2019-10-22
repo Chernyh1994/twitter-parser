@@ -15,7 +15,7 @@ export class TwitterService {
             consumer_key: '',
             consumer_secret: '',
             access_token_key: '',
-            access_token_secret: '',
+            access_token_secret: ''
         });
 
 
@@ -33,13 +33,6 @@ export class TwitterService {
 
     async addNewTweets(createTweetDto: CreateTweetDto): Promise<any> {
 
-        // const params = {
-        //     q: '',
-        //     geocode: '47.857589,35.104832,10km',
-        //     count: 1,
-        // };
-
-        console.log(createTweetDto,'dddddddddddddddddddd')
         const tweets = await this.client.get('search/tweets', createTweetDto );
 
         return await Promise.all(
@@ -55,5 +48,11 @@ export class TwitterService {
                 console.log(newTweet)
             }),
         );
+    }
+
+    async removeTweet(tweetID): Promise<any> {
+        const removeTweet = await this.tweetModel
+            .findByIdAndRemove(tweetID, { useFindAndModify: false })
+        return removeTweet;
     }
 }

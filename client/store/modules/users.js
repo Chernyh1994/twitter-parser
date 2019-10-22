@@ -36,7 +36,11 @@ const mutations = {
     CLEAR_ROLE: () => {
         localStorage.removeItem('role');
         localStorage.removeItem('token');
-    }
+    },
+
+    REMOVE_USER: (state, allUsers) => {
+        state.allUsers = allUsers;
+    },
 };
 
 const actions = {
@@ -50,19 +54,20 @@ const actions = {
             .catch(error => console.log(error));
     },
 
-    REMOVE_USER: async ({commit}, data) => {
+    REMOVE_USER: async ({commit}, payload) => {
         await axios
-            .delete('http://localhost:5000/users/delete?userID=' + data )
-            .then(res => {
-                commit('GET_USERS', res.data)
+            .delete('http://localhost:5000/users/delete?userID=' + payload )
+            .then(request => request.data)
+            .then(allUsers => {
+                commit('REMOVE_USER', allUsers);
             })
             .catch(error => console.log(error));
     },
 
-    ADD_USER:  async ({dispatch}, payload) => {
+    ADD_USER:  async ({dispatch}, data) => {
         await axios
-            .post('http://localhost:5000/auth/register', payload)
-            .then(res => dispatch('RESET_FORM', res.data))
+            .post('http://localhost:5000/auth/register', data)
+            .then(res => dispatch( res.data))
             .catch(error => console.log(error));
     },
 

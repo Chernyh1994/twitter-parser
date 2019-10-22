@@ -37,7 +37,7 @@ export class AuthService {
       const userRegisterName = await this.findByUsername(newUser.username);
       if (!userRegisterEmail && !userRegisterName) {
         newUser.password = await bcrypt.hash(newUser.password, saltRounds);
-        newUser.role = 'admin';
+        newUser.role = 'user';
         return newUser.save();
       } else {
         throw new HttpException('REGISTRATION.USER_ALREADY_REGISTERED', HttpStatus.FORBIDDEN); }

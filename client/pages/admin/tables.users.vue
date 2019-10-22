@@ -30,28 +30,21 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapGetters } from 'vuex'
 
   export default {
  
-  computed: mapState({
-    users: state => state.users.allUsers    
-  }),
+  computed: {
+    ...mapGetters('users', {users: 'USERS'}),
+  },
+
+  methods:{ 
+    ...mapActions('users', ['REMOVE_USER'])
+  },
   
 
   mounted() {
     this.$store.dispatch('users/GET_USERS');
-    // this.$store.dispatch('users/REMOVE_USER');
   }
-
-
-    // methods: {
-    // deleteUser(id) {
-    //   axios.delete(`${server.baseURL}/users/delete?userID=${id}`).then(data => {
-    //     console.log(data);
-    //     window.location.reload();
-    //   });
-    // }
-    // }
-  }
+}
 </script>

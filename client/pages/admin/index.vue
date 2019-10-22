@@ -17,13 +17,11 @@
                   align="center"
                   justify="end"
                 >
-                <v-btn large color="teal" icon>
-                    <v-icon>mdi-vuetify</v-icon>
-                </v-btn>
+  
                 <v-btn large color="with" icon>
                     <v-icon>mdi-pencil</v-icon>
                 </v-btn>
-                <v-btn large color="#B71C1C" icon>
+                <v-btn large color="#B71C1C" icon @click="REMOVE_TWEET(tweet._id)">
                     <v-icon>mdi-window-close</v-icon>
                 </v-btn>
             </v-row>
@@ -81,7 +79,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import { mapState, mapActions, mapGetters } from 'vuex';
 import Pagination from '~/components/Paginations';
 
   export default {
@@ -89,13 +87,14 @@ import Pagination from '~/components/Paginations';
       Pagination
     },
 
-        computed: mapState({
-      tweets: state => state.twitter.allTweets    
-    }),
+    computed: {
+      ...mapGetters('twitter',{tweets: 'TWEET'}),
+    },
 
-    methods: mapActions('twitter', [' GET_TWEETS']),
+    methods:{ 
+      ...mapActions('twitter', ['REMOVE_TWEET'])
+    },
   
-
     mounted() {
       this.$store.dispatch('twitter/GET_TWEETS');
     }
