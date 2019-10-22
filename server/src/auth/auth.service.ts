@@ -46,10 +46,10 @@ export class AuthService {
 
   async login(username, password) {
     const userFromDb = await this.userModel.findOne({ username});
-    if (!userFromDb) { throw new HttpException('USERNAME_NOT_FOUND', HttpStatus.NOT_FOUND); }
+    if (!userFromDb) { throw new HttpException('USERNAME_NOT_FOUND', HttpStatus.BAD_REQUEST); }
 
     const isValidPass = await bcrypt.compare(password, userFromDb.password);
-    if (!isValidPass) { throw new HttpException('PASSWORD_NOT_FOUND', HttpStatus.NOT_FOUND); }
+    if (!isValidPass) { throw new HttpException('PASSWORD_NOT_FOUND', HttpStatus.BAD_REQUEST); }
 
     const token: string = jwt.sign({id: userFromDb._id, role: userFromDb.role}, 'rwerwer', {expiresIn: '100h'});
     return {token};

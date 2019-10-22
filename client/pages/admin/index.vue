@@ -1,40 +1,51 @@
 <template>
-  <v-container class="grey lighten-5">
-    <v-row
-    justify="center"
-   
-    >
-      <v-col
-      v-for="tweet in tweets" :key="tweet._id"
-        md="4"
+  <div>
+    <no-ssr>
+      <div 
+        v-masonry 
+        transition-duration="3s" 
+        item-selector=".item" 
+        class="masonry-container"
       >
-         <v-card
+        <div
+          v-masonry-tile 
+          class="item" 
+          :key="index" 
+          v-for="(tweet, index) in tweets"
+        >
+          <v-card
             class="ma-3 pa-3"
             color="#26c6da"
             dark
           >
-              <v-row
-                  align="center"
-                  justify="end"
-                >
-  
-                <v-btn large color="with" icon>
-                    <v-icon>mdi-pencil</v-icon>
-                </v-btn>
-                <v-btn large color="#B71C1C" icon @click="REMOVE_TWEET(tweet._id)">
-                    <v-icon>mdi-window-close</v-icon>
-                </v-btn>
+            <v-row
+              align="center"
+              justify="end"
+            >
+              <v-btn
+                large
+                color="with"
+                icon
+              >
+                <v-icon>mdi-pencil</v-icon>
+              </v-btn>
+              <v-btn
+                large
+                color="#B71C1C" 
+                icon 
+                @click="REMOVE_TWEET(tweet._id)"
+              >
+                <v-icon>mdi-window-close</v-icon>
+              </v-btn>
             </v-row>
-
             <v-card-title>
               <v-icon
                 large
                 left
               >
                 mdi-twitter
-                </v-icon>
+              </v-icon>
             </v-card-title>
-
             <v-card-text class="headline font-weight-bold">
               "{{ tweet.text }}"
             </v-card-text>
@@ -57,10 +68,10 @@
                   justify="end"
                 >
                     <v-btn
-                    icon
-                    dark
+                      icon
+                      dark
                     >
-                        <v-icon >mdi-heart</v-icon>
+                      <v-icon >mdi-heart</v-icon>
                     </v-btn>                  
                     <span class="subheading mr-2">{{ tweet.favoriteCount }}</span>
                     <span class="mr-1">·</span>
@@ -70,21 +81,24 @@
               </v-list-item>
             </v-card-actions>
           </v-card>
-      </v-col>
-    </v-row>
+        </div>
+      </div>
+    </no-ssr>
 
     <Pagination />
 
-  </v-container>
+  </div>
 </template>
 
 <script>
-import { mapState, mapActions, mapGetters } from 'vuex';
-import Pagination from '~/components/Paginations';
+  import { mapState, mapActions, mapGetters } from 'vuex';
+  import Pagination from '~/components/Paginations';
+  import NoSSR from 'vue-no-ssr';
 
   export default {
     components: {
-      Pagination
+      Pagination,
+      'no-ssr': NoSSR
     },
 
     computed: {
@@ -97,7 +111,21 @@ import Pagination from '~/components/Paginations';
   
     mounted() {
       this.$store.dispatch('twitter/GET_TWEETS');
+      if (typeof this.$redrawVueMasonry === 'function') {
+        this.$redrawVueMasonry()
+      }
     }
     
   }
 </script>
+
+<style scoped>
+  .item {
+    border: none;
+    width: 22.5rem;
+  }
+  .masonry-container {
+    width: 95%;
+    margin: 0 auto;
+  }
+</style>

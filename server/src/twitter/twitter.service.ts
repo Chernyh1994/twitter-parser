@@ -15,9 +15,8 @@ export class TwitterService {
             consumer_key: '',
             consumer_secret: '',
             access_token_key: '',
-            access_token_secret: ''
+            access_token_secret: '',
         });
-
 
         // this.params = {
         //     q: '',
@@ -45,14 +44,13 @@ export class TwitterService {
                 newTweet.profileImages = tweet.user.profile_image_url_https;
 
                 newTweet.save();
-                console.log(newTweet)
             }),
         );
     }
 
     async removeTweet(tweetID): Promise<any> {
         const removeTweet = await this.tweetModel
-            .findByIdAndRemove(tweetID, { useFindAndModify: false })
+            .findByIdAndRemove(tweetID, { useFindAndModify: false });
         return removeTweet;
     }
 }

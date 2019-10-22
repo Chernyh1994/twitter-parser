@@ -1,21 +1,27 @@
 <template>
-  <v-container class="grey lighten-5">
-    <v-row
-    justify="center"
-    >
-      <v-col
-      v-for="tweet in tweets" :key="tweet._id"
-      md="4"
+  <div>
+    <no-ssr>
+      <div 
+        v-masonry
+        transition-duration="3s" 
+        item-selector=".item" 
+        class="masonry-container"
       >
-         <v-card
-          class="ma-3 pa-3"
-          color="#26c6da"
-          dark
+        <div 
+          v-masonry-tile 
+          class="item" 
+          :key="index" 
+          v-for="(tweet, index) in tweets"
+        >   
+          <v-card
+            class="ma-3 pa-3"
+            color="#26c6da"
+            dark
           >
             <v-card-title>
               <v-icon
-              large
-              left
+               large
+                left
               >
                 mdi-twitter
               </v-icon>
@@ -40,8 +46,8 @@
                 </v-list-item-content>
 
                 <v-row
-                align="center"
-                justify="end"
+                  align="center"
+                  justify="end"
                 >
                   <v-icon class="mr-1">mdi-heart</v-icon>
                   <span class="subheading mr-2">{{ tweet.favoriteCount }}</span>
@@ -52,47 +58,51 @@
               </v-list-item>
             </v-card-actions>
           </v-card>
-      </v-col>
-    </v-row>
+        </div>
+      </div>
+    </no-ssr>
 
-    <v-pagination
-      v-model="pagination.page"
-      :length="pages"
-    ></v-pagination>
+    <Pagination/>
 
-  </v-container>
+  </div>
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
-// import Pagination from '~/components/Paginations';
+  import { mapState, mapActions, mapGetters } from 'vuex';
+  import NoSSR from 'vue-no-ssr';
+  import Pagination from '~/components/Paginations';
 
   export default {
-    // components: {
-    //   Pagination
-    // },
+    components: {
+      Pagination,
+      'no-ssr': NoSSR
+    },
 
-    data () {
-      return {
-        pagination: {},
-      }
-    }, 
-
-    computed: mapState({
-      tweets: state => state.twitter.allTweets,
-      pages () {
-        return this.pagination.rowsPerPage ? Math.ceil(this.items.length / this.pagination.rowsPerPage) : 0
-      }    
-    }),
+     computed: {
+      ...mapGetters('twitter',{tweets: 'TWEET'}),
+    },
 
     methods:{ 
+      ...mapActions('twitter', ['REMOVE_TWEET'])
     },
   
-
     mounted() {
       this.$store.dispatch('twitter/GET_TWEETS');
+      if (typeof this.$redrawVueMasonry === 'function') {
+        this.$redrawVueMasonry()
+      }
     }
- 
   }
 </script>
+
+<style scoped>
+  .item {
+    border: none;
+    width: 22.5rem;
+  }
+  .masonry-container {
+    width: 95%;
+    margin: 0 auto;
+  }
+</style>
 

@@ -1,13 +1,13 @@
 <template>
     <div>
         <v-navigation-drawer
-        v-if="ROLE"
-        color = "primary"
-        v-model="drawer"
-        :mini-variant="miniVariant"
-        :clipped="clipped"
-        fixed
-        app
+            v-if="ROLE"
+            color = "primary"
+            v-model="drawer"
+            :mini-variant="miniVariant"
+            :clipped="clipped"
+            fixed
+            app
         >
             <v-list>
 
@@ -59,16 +59,21 @@
         </v-navigation-drawer>
 
         <v-app-bar
-        color = "primary"
-        :clipped-left="clipped"
-        fixed
-        app
+            color = "primary"
+            :clipped-left="clipped"
+            fixed
+            app
         >
-            <v-app-bar-nav-icon v-if="ROLE" class="white--text headline" @click.stop="drawer = !drawer" />
-                <v-btn v-if="ROLE"
-                class="white--text headline"
-                icon
-                @click.stop="miniVariant = !miniVariant"
+            <v-app-bar-nav-icon 
+                v-if="ROLE" 
+                class="white--text headline" 
+                @click.stop="drawer = !drawer" 
+            />
+                <v-btn 
+                    v-if="ROLE"
+                    class="white--text headline"
+                    icon
+                    @click.stop="miniVariant = !miniVariant"
                 >
                     <v-icon>mdi-{{ `chevron-${miniVariant ? 'right' : 'left'}` }}</v-icon>
                 </v-btn>
@@ -76,11 +81,28 @@
             <v-spacer />
             
              <div>
-              <v-btn class="ma-4" tile outlined color="white" small to="/" v-if="ROLE" @click="CLEAR_ROLE">
+              <v-btn 
+                class="ma-4" 
+                tile 
+                outlined 
+                color="white" 
+                small 
+                to="/" 
+                v-if="ROLE" 
+                @click="clear"
+            >
                 Sign out
               </v-btn>
-              <v-btn class="ma-4" tile outlined color="white" small to="/profil" v-if="ROLE">
-                Profil
+              <v-btn 
+                class="ma-4" 
+                tile 
+                outlined 
+                color="white" 
+                small 
+                to="/profil" 
+                v-if="ROLE"
+            >
+                <v-icon>mdi-account-circle mdi-light</v-icon>
               </v-btn>
               <nuxt-link to="/auth" class="navbar-item white--text" v-if="!ROLE"> Login In </nuxt-link>
               <v-btn class="ma-4" tile outlined color="white" small to="/auth/registration" v-if="!ROLE">
@@ -94,25 +116,30 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from 'vuex'
+    import { mapGetters, mapMutations } from 'vuex'
 
-export default {
-    computed: mapGetters('users',['ROLE']),
+    export default {
+        computed: mapGetters('users',['ROLE']),
 
-    methods:{
-      ...mapMutations('users',['CLEAR_ROLE'])
-    },
+        methods:{
+            ...mapMutations('users',['CLEAR_ROLE']),
+            async clear(){
+                await this.$store.commit('users/CLEAR_ROLE')
+                window.location.reload()
+            }
+        },
 
-  data () {
-    return {
-        clipped: true,
-        drawer: false,
-        fixed: false,
-        miniVariant: true,
-        right: true,
-        rightDrawer: false,
-        title: 'MyTest'
+        data () {
+            return {
+                clipped: true,
+                drawer: false,
+                fixed: false,
+                miniVariant: true,
+                right: true,
+                rightDrawer: false,
+                title: 'MyTest'
+            }
+        }
     }
-  }
-}
+    
 </script>
