@@ -4,19 +4,20 @@ import * as Twitter from 'twitter';
 import { Tweet } from './interfaces/tweet.interface';
 import { InjectModel } from '@nestjs/mongoose';
 import { CreateTweetDto } from './dto/create-tweet';
+import { AppTwitterDto } from './dto/twitter-api';
 
 @Injectable()
 export class TwitterService {
     client;
     params;
 
-    constructor(@InjectModel('Tweet') private readonly tweetModel: Model<Tweet> ) {
-        this.client = new Twitter( {
-            consumer_key: '',
-            consumer_secret: '',
-            access_token_key: '',
-            access_token_secret: '',
-        });
+    constructor(@InjectModel('Tweet') private readonly tweetModel: Model<Tweet>) {
+        // this.client = new Twitter( {
+        //     consumer_key: '',
+        //     consumer_secret: '',
+        //     access_token_key: '',
+        //     access_token_secret: '',
+        // });
 
         // this.params = {
         //     q: '',
@@ -26,14 +27,14 @@ export class TwitterService {
         // };
     }
 
-    async findAllTweet(): Promise<Tweet[]> {
-        return await this.tweetModel.find().exec();
+    async addApiTwitter(appTwitterDto: AppTwitterDto): Promise<any> {
+        const apikeys = await appTwitterDto;
+        console.log(apikeys);
+        return  new Twitter(apikeys);
     }
 
     async addNewTweets(createTweetDto: CreateTweetDto): Promise<any> {
-
         const tweets = await this.client.get('search/tweets', createTweetDto );
-
         return await Promise.all(
             tweets.statuses.map(async (tweet) => {
                 const newTweet = await this.tweetModel(createTweetDto);
@@ -46,6 +47,10 @@ export class TwitterService {
                 newTweet.save();
             }),
         );
+    }
+
+    async findAllTweet(): Promise<Tweet[]> {
+        return await this.tweetModel.find().exec();
     }
 
     async removeTweet(tweetID): Promise<any> {

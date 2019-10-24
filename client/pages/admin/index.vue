@@ -24,13 +24,6 @@
             >
               <v-btn
                 large
-                color="with"
-                icon
-              >
-                <v-icon>mdi-pencil</v-icon>
-              </v-btn>
-              <v-btn
-                large
                 color="#B71C1C" 
                 icon 
                 @click="REMOVE_TWEET(tweet._id)"
@@ -67,16 +60,11 @@
                   align="center"
                   justify="end"
                 >
-                    <v-btn
-                      icon
-                      dark
-                    >
-                      <v-icon >mdi-heart</v-icon>
-                    </v-btn>                  
-                    <span class="subheading mr-2">{{ tweet.favoriteCount }}</span>
-                    <span class="mr-1">·</span>
-                    <v-icon class="mr-1">mdi-share-variant</v-icon>
-                    <span class="subheading">{{ tweet.retweetCount }}</span>
+                  <v-icon >mdi-heart</v-icon>                 
+                  <span class="subheading mr-2">{{ tweet.favoriteCount }}</span>
+                  <span class="mr-1">·</span>
+                  <v-icon class="mr-1">mdi-share-variant</v-icon>
+                  <span class="subheading">{{ tweet.retweetCount }}</span>
                 </v-row>
               </v-list-item>
             </v-card-actions>
@@ -85,19 +73,16 @@
       </div>
     </no-ssr>
 
-    <Pagination />
 
   </div>
 </template>
 
 <script>
   import { mapState, mapActions, mapGetters } from 'vuex';
-  import Pagination from '~/components/Paginations';
   import NoSSR from 'vue-no-ssr';
 
   export default {
     components: {
-      Pagination,
       'no-ssr': NoSSR
     },
 

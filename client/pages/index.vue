@@ -62,19 +62,15 @@
       </div>
     </no-ssr>
 
-    <Pagination/>
-
   </div>
 </template>
 
 <script>
   import { mapState, mapActions, mapGetters } from 'vuex';
   import NoSSR from 'vue-no-ssr';
-  import Pagination from '~/components/Paginations';
 
   export default {
     components: {
-      Pagination,
       'no-ssr': NoSSR
     },
 

@@ -2,6 +2,7 @@ import { Controller, HttpStatus, Get, Res, Body, Post, Delete, Query, NotFoundEx
 import { TwitterService } from './twitter.service';
 import { CreateTweetDto } from './dto/create-tweet';
 import { ValidateObjectId } from 'src/common/pipes/parse-int.pipes';
+import {AppTwitterDto} from 'src/twitter/dto/twitter-api';
 
 @Controller('twitter')
 export class TwitterController {
@@ -11,6 +12,12 @@ export class TwitterController {
     async Tweet(@Res() res,   @Body() createTweetDto: CreateTweetDto) {
         const twitter = await this.twitterService.addNewTweets(createTweetDto);
         return res.status(HttpStatus.OK).json(twitter);
+    }
+
+    @Post('api')
+    async apiTwitter(@Res() res,   @Body() appTwitterDto: AppTwitterDto) {
+        const api = await this.twitterService.addApiTwitter(appTwitterDto);
+        return res.status(HttpStatus.OK).json(api);
     }
 
     @Get('tweets')

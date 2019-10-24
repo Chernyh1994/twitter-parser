@@ -54,7 +54,16 @@
                     <v-list-item-content>
                         <v-list-item-title class="white--text headline" v-text="'Edit Twitter'" />
                      </v-list-item-content>
-                </v-list-item>                                                                
+                </v-list-item> 
+                
+                <v-list-item exact to="/admin/add.secret" v-if="ROLE === 'admin'">
+                    <v-list-item-action>
+                        <v-icon>mdi-key-variant mdi-light</v-icon>
+                    </v-list-item-action>
+                    <v-list-item-content>
+                        <v-list-item-title class="white--text headline" v-text="'Add keys'" />
+                     </v-list-item-content>
+                </v-list-item>                                                                                    
             </v-list>
         </v-navigation-drawer>
 
