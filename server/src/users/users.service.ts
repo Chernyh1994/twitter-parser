@@ -21,7 +21,7 @@ export class UsersService {
 
     async deleteUser(userID): Promise<any> {
         const deletedUser = await this.userModel
-            .findByIdAndRemove(userID, { useFindAndModify: false });
+            .findByIdAndRemove(userID);
         return deletedUser;
     }
 }

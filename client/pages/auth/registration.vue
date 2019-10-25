@@ -12,52 +12,60 @@
       lazy-validation
       form
       method="post"
-      @submit.prevent="register">
+      @submit.prevent="register"
+    >
 
       <v-text-field
-      v-model="firstName"
-      label="First Name"
-      required
+        v-model="firstName"
+        label="First Name"
+        required
       ></v-text-field>
 
       <v-text-field
-      v-model="lastName"
-      label="Last Name"
-      required
+        v-model="lastName"
+        label="Last Name"
+        required
       ></v-text-field>
 
       <v-text-field
-      v-model="username"
-      label="User Name"
-      required
+        v-model="username"
+        label="User Name"
+        required
       ></v-text-field>
 
       <v-text-field
-      v-model="email"
-      :rules="emailRules"
-      label="E-mail"
-      required
+        v-model="email"
+        :rules="emailRules"
+        label="E-mail"
+        required
       ></v-text-field>
 
       <v-text-field
-      v-model="password"
-      :append-icon="show1 ? 'mdi-eye-outline' : 'mdi-eye-off-outline'"
-      :rules="[rules.required, rules.min]"
-      :type="show1 ? 'text' : ''"
-      name="input-10-1"
-      label="Password"
-      hint="At least 6 characters"
-      counter
-      @click:append="show1 = !show1"
+        v-model="password"
+        :append-icon="show1 ? 'mdi-eye-outline' : 'mdi-eye-off-outline'"
+        :rules="[rules.required, rules.min]"
+        :type="show1 ? 'text' : 'password'"
+        name="input-10-1"
+        label="Password"
+        hint="At least 6 characters"
+        counter
+        @click:append="show1 = !show1"
       ></v-text-field>
 
       <v-card-actions>
         <v-btn
-        color="primary"
-        class="mr-4"
-        type="submit"
+          color="primary"
+          class="mr-4"
+          type="submit"
         >
           Create
+        </v-btn>
+        <v-btn
+          color="primary"
+          class="mr-4"
+          to="/"
+        >
+          Cancel
         </v-btn>
         <div>
           Already got an account? <nuxt-link to="/auth">Login</nuxt-link>
@@ -116,7 +124,7 @@ export default {
             email: this.email,
             password: this.password
           })
-          // this.$router.push('/auth')
+          this.$router.push('/auth')
         } else { this.error  = 'Fill in all the fields'}
       } catch (e) {
         this.error = e.response.data.message

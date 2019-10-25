@@ -31,13 +31,13 @@ export class AuthService {
   }
 
   async registration(createUserDto: CreateUserDto): Promise<User> {
-    const newUser = await this.userModel(createUserDto);
+    const newUser = await new this.userModel(createUserDto);
     if (this.isValidEmail(newUser.email)) {
       const userRegisterEmail = await this.findByEmail(newUser.email);
       const userRegisterName = await this.findByUsername(newUser.username);
       if (!userRegisterEmail && !userRegisterName) {
         newUser.password = await bcrypt.hash(newUser.password, saltRounds);
-        newUser.role = 'user';
+        newUser.roles = 'user';
         return newUser.save();
       } else {
         throw new HttpException('REGISTRATION.USER_ALREADY_REGISTERED', HttpStatus.FORBIDDEN); }
@@ -51,7 +51,15 @@ export class AuthService {
     const isValidPass = await bcrypt.compare(password, userFromDb.password);
     if (!isValidPass) { throw new HttpException('PASSWORD_NOT_FOUND', HttpStatus.BAD_REQUEST); }
 
-    const token: string = jwt.sign({id: userFromDb._id, role: userFromDb.role}, 'rwerwer', {expiresIn: '100h'});
+    const token: string = jwt.sign({
+                                    id: userFromDb._id,
+                                    roles: userFromDb.roles,
+                                    username: userFromDb.username,
+                                    firstName: userFromDb.firstName,
+                                    lastName: userFromDb.lastName,
+                                  },
+                                  'rwerwer',
+                                  {expiresIn: '100h'});
     return {token};
   }
 }

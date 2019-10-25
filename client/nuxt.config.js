@@ -38,30 +38,10 @@ export default {
   buildModules: [
     '@nuxtjs/vuetify',
   ],
-
-  // axios: {
-  //   baseURL: 'http://localhost:5000'
-  // },
-
-  // auth: {
-  //   strategies:{
-  //     local:{
-  //       endpoints: {
-  //         login: { url: '/auth/login', method: 'post', propertyName: 'token' },
-  //         user: { url: '/auth/user', method: 'get', propertyName: 'user' },
-  //         logout: false
-  //       },
-  //       tokenRequired: true,
-  //       tokenType: 'Bearer',
-  //     }
-  //   }
-  // },
   /*
   ** Nuxt.js modules
   */
   modules: [
-    // '@nuxtjs/axios',
-    // '@nuxtjs/auth',
     ['nuxt-gmaps', {
       key: ''
     }],

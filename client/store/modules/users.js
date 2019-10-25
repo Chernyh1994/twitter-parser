@@ -9,7 +9,7 @@ const state = {
     allUsers: [],
     token: null,
     form: formState,
-    role:  localStorage.getItem('role') || ''
+    role:  localStorage.getItem('roles') || ''
 };
 
 const getters = { 
@@ -29,12 +29,12 @@ const mutations = {
 
     REGISTER_USER: (state, data) => {
         const token = jwt_decode(data.token);
-        localStorage.setItem('role', token.role);
+        localStorage.setItem('roles', token.roles);
         state.token = data;
     },
 
     CLEAR_ROLE: () => {
-        localStorage.removeItem('role');
+        localStorage.removeItem('roles');
         localStorage.removeItem('token');
     },
 

@@ -90,31 +90,29 @@
             <v-spacer />
             
              <div>
+            
               <v-btn 
-                class="ma-4" 
-                tile 
-                outlined 
+                class="ma-4"   
+                tile outlined 
                 color="white" 
-                small 
-                to="/" 
-                v-if="ROLE" 
-                @click="clear"
-            >
-                Sign out
-              </v-btn>
-              <v-btn 
-                class="ma-4" 
-                tile 
-                outlined 
-                color="white" 
-                small 
-                to="/profil" 
+                small  
+                @click="clear"  
                 v-if="ROLE"
-            >
-                <v-icon>mdi-account-circle mdi-light</v-icon>
+              >
+                Sign out 
               </v-btn>
+              <Nestedlists v-if="ROLE" />
+
               <nuxt-link to="/auth" class="navbar-item white--text" v-if="!ROLE"> Login In </nuxt-link>
-              <v-btn class="ma-4" tile outlined color="white" small to="/auth/registration" v-if="!ROLE">
+              <v-btn 
+                class="ma-4" 
+                tile 
+                outlined 
+                color="white" 
+                small 
+                to="/auth/registration" 
+                v-if="!ROLE"
+              >
                 Register
               </v-btn>
             </div>
@@ -125,16 +123,22 @@
 </template>
 
 <script>
-    import { mapGetters, mapMutations } from 'vuex'
+    import Nestedlists from './Nestedlists';
+    import { mapGetters, mapMutations } from 'vuex';
 
     export default {
+
+        components: {
+            Nestedlists,
+        },
+
         computed: mapGetters('users',['ROLE']),
 
         methods:{
             ...mapMutations('users',['CLEAR_ROLE']),
             async clear(){
                 await this.$store.commit('users/CLEAR_ROLE')
-                window.location.reload()
+            this.$router.go()
             }
         },
 

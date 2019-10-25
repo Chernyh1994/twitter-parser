@@ -22,7 +22,7 @@
       prepend-icon="mdi-map-marker-radius"
       hide-details
       single-line
-      label="Radius"
+      label="Golocation and radius"
       ></v-text-field>
 
       <v-select

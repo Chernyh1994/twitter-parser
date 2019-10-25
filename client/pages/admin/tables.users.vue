@@ -16,7 +16,7 @@
             <td>{{ user.firstName }}</td>
             <td>{{ user.lastName }}</td>
             <td>{{ user.email }}</td>
-            <td>{{ user.role }}</td>
+            <td>{{ user.roles }}</td>
             <td>{{ user.username }}</td>
             <td>
                 <v-btn text color="error" @click="REMOVE_USER(user._id)">

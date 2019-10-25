@@ -16,8 +16,6 @@
         >
           <v-text-field
             v-model="username"
-            :rules="nameRules"
-            :counter="10"
             label="User name"
             required
           ></v-text-field>
@@ -32,7 +30,7 @@
           v-model="password"
           :append-icon="show1 ? 'mdi-eye-outline' : 'mdi-eye-off-outline'"
           :rules="[rules.required, rules.min]"
-          :type="show1 ? 'text' : ''"
+          :type="show1 ? 'text' : 'password'"
           name="input-10-1"
           label="Password"
           hint="At least 6 characters"
@@ -71,6 +69,10 @@ export default {
 
   layout: 'login',
 
+  components: {
+      Notification,
+  },
+
   data: () => ({
     valid: false,
     show1: false,
@@ -78,15 +80,9 @@ export default {
     username: '',
     password: '',
 
-    nameRules: [
-      v => !!v || 'Name is required',
-      v => v.length <= 10 || 'Name must be less than 10 characters',
-    ],
-
     rules: {
       required: value => !!value || 'Required.',
       min: v => v.length >= 6 || 'Min 6 characters',
-      emailMatch: () => ('The email and password you entered don\'t match'),
     },
   }),
   
@@ -94,17 +90,19 @@ export default {
     ...mapActions('users', ['LOGIN_USER']),
     async  login(e) {
       try { 
-        await this.$store.dispatch('users/LOGIN_USER',{ 
-          username: this.username,
-          password: this.password,    
-        })
-        // this.$router.push('/')
+        if(this.username && this.password){
+          await this.$store.dispatch('users/LOGIN_USER',{ 
+            username: this.username,
+            password: this.password,    
+          })
+        this.$router.push('/')
+        } else { this.error  = 'Fill in all the fields'}
       } catch (e) {
         console.log('dwodowdowdowdow',e)
-        // this.error = e.response.data.message
+        this.error = e.response.data.message
       }
     },
-  }
+  },
 
 }
 </script>
