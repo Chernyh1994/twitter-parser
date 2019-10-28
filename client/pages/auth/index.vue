@@ -99,7 +99,7 @@ export default {
         } else { this.error  = 'Fill in all the fields'}
       } catch (e) {
         console.log('dwodowdowdowdow',e)
-        this.error = e.response.data.message
+        this.error = e
       }
     },
   },

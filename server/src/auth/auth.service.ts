@@ -4,7 +4,7 @@ import { User } from '../users/interfaces/user.interface';
 import { InjectModel } from '@nestjs/mongoose';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import * as bcrypt from 'bcryptjs';
-import * as jwt from 'jsonwebtoken';
+import { JwtService } from '@nestjs/jwt';
 
 const saltRounds = 10;
 
@@ -12,6 +12,7 @@ const saltRounds = 10;
 export class AuthService {
   constructor(
     @InjectModel('User') private readonly userModel: Model<User>,
+    private readonly jwtService: JwtService,
   ) {}
 
   async findByUsername(username: string): Promise<User> {
@@ -51,15 +52,9 @@ export class AuthService {
     const isValidPass = await bcrypt.compare(password, userFromDb.password);
     if (!isValidPass) { throw new HttpException('PASSWORD_NOT_FOUND', HttpStatus.BAD_REQUEST); }
 
-    const token: string = jwt.sign({
-                                    id: userFromDb._id,
-                                    roles: userFromDb.roles,
-                                    username: userFromDb.username,
-                                    firstName: userFromDb.firstName,
-                                    lastName: userFromDb.lastName,
-                                  },
-                                  'rwerwer',
-                                  {expiresIn: '100h'});
-    return {token};
+    return {
+      token: this.jwtService.sign({id: userFromDb._id,
+        roles: userFromDb.roles}),
+    };
   }
 }
