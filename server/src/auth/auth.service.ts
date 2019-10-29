@@ -38,7 +38,7 @@ export class AuthService {
       const userRegisterName = await this.findByUsername(newUser.username);
       if (!userRegisterEmail && !userRegisterName) {
         newUser.password = await bcrypt.hash(newUser.password, saltRounds);
-        newUser.roles = 'user';
+        newUser.role = 'user';
         return newUser.save();
       } else {
         throw new HttpException('REGISTRATION.USER_ALREADY_REGISTERED', HttpStatus.FORBIDDEN); }
@@ -53,8 +53,14 @@ export class AuthService {
     if (!isValidPass) { throw new HttpException('PASSWORD_NOT_FOUND', HttpStatus.BAD_REQUEST); }
 
     return {
-      token: this.jwtService.sign({id: userFromDb._id,
-        roles: userFromDb.roles}),
+      token: this.jwtService.sign({
+        id: userFromDb._id,
+        role: userFromDb.role}),
     };
   }
+
+  async user() {
+    return 'ddd';
+  }
+
 }

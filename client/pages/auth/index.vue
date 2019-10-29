@@ -5,10 +5,9 @@
   >
   <Notification :message="error" v-if="error"/>
   <v-form
-  ref="form"
-  v-model="valid"
-  lazy-validation
-  @submit.prevent="login"  >
+    method="post" 
+    @submit.prevent="login"  
+  >
     <v-card-title>
        <v-col
           cols="12"
@@ -29,7 +28,7 @@
         <v-text-field
           v-model="password"
           :append-icon="show1 ? 'mdi-eye-outline' : 'mdi-eye-off-outline'"
-          :rules="[rules.required, rules.min]"
+
           :type="show1 ? 'text' : 'password'"
           name="input-10-1"
           label="Password"
@@ -62,7 +61,6 @@
 
 
 <script>
-import {mapActions} from 'vuex';
 import Notification from '~/components/Notification';
 
 export default {
@@ -73,36 +71,30 @@ export default {
       Notification,
   },
 
-  data: () => ({
-    valid: false,
-    show1: false,
-    error: null,
-    username: '',
-    password: '',
+  data() {
+    return {
+      username: '',
+      password: '',
+      error: null,
+      show1: false
+    };
+  },
 
-    rules: {
-      required: value => !!value || 'Required.',
-      min: v => v.length >= 6 || 'Min 6 characters',
-    },
-  }),
-  
-  methods:{
-    ...mapActions('users', ['LOGIN_USER']),
-    async  login(e) {
-      try { 
-        if(this.username && this.password){
-          await this.$store.dispatch('users/LOGIN_USER',{ 
+  methods: {
+    async login() {
+      try {
+        await this.$auth.loginWith('local', {
+          data: {
             username: this.username,
-            password: this.password,    
-          })
-        this.$router.push('/')
-        } else { this.error  = 'Fill in all the fields'}
+            password: this.password,
+          },
+        });
+
+        this.$router.push('/');
       } catch (e) {
-        console.log('dwodowdowdowdow',e)
-        this.error = e
+        this.error = e;
       }
     },
   },
-
 }
 </script>

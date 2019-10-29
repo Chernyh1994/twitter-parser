@@ -75,6 +75,42 @@ export default {
   build: {
     extend (config, ctx) {
     }
-  }
+  },
+
+  modules: [
+    '@nuxtjs/axios',
+    '@nuxtjs/auth'
+  ],
+  
+  axios: {
+    baseURL: 'http://localhost:5000/',
+  },
+  
+  auth: {
+    strategies: {
+      local: {
+        endpoints: {
+          login: {
+            url: '/auth/login',
+            method: 'post',
+            propertyName: 'token'
+          },
+          user: { 
+            url: '/auth/user', 
+            method: 'get', 
+            propertyName: false 
+          },
+          // user:false,
+          logout: false,
+        },
+        tokenRequired: true,
+        tokenType: 'Bearer'
+      }
+    }
+  },
+
+  // router: {
+  //   middleware: ['auth']
+  // }
 };
 

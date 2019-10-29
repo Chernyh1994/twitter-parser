@@ -96,7 +96,7 @@
                 tile outlined 
                 color="white" 
                 small  
-                @click="clear"  
+                @click="logout"  
                 v-if="ROLE"
               >
                 Sign out 
@@ -124,7 +124,7 @@
 
 <script>
     import Nestedlists from './Nestedlists';
-    import { mapGetters, mapMutations } from 'vuex';
+    import { mapGetters, mapMutations, mapState } from 'vuex';
 
     export default {
 
@@ -132,14 +132,16 @@
             Nestedlists,
         },
 
-        computed: mapGetters('users',['ROLE']),
+        computed: mapState({
+            ROLE: state => state.auth.user
+        }),
+
 
         methods:{
-            ...mapMutations('users',['CLEAR_ROLE']),
-            async clear(){
-                await this.$store.commit('users/CLEAR_ROLE')
-            this.$router.go()
-            }
+       async logout() {
+      await this.$auth.logout()
+      this.$router.push('/')
+    }
         },
 
         data () {

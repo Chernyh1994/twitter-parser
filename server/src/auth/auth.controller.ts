@@ -28,4 +28,13 @@ export class AuthController {
     }
     return res.status(HttpStatus.OK).json(result);
   }
+
+  @Get('user')
+  @HttpCode(HttpStatus.OK)
+  public async user(@Response() res, @Body() auth) {
+    console.log(auth)
+    const result = await this.authService.user();
+    return res.status(HttpStatus.OK).json(result);
+  }
+
 }
