@@ -1,16 +1,7 @@
 import axios from "axios";
-import  jwt_decode from 'jwt-decode';
-
-const formState = {
-
-};
 
 const state = {
     allUsers: [],
-    token: localStorage.getItem('token') || '',
-    form: formState,
-    role: null
-    //   localStorage.getItem('roles') || ''
 };
 
 const getters = { 
@@ -18,27 +9,11 @@ const getters = {
         return state.allUsers;
     },
 
-    ROLE: state => {
-        return state.role;
-    }
 };
 
 const mutations = {
     SET_USERS: (state, allUsers) => {
         state.allUsers = allUsers;
-    },
-
-    REGISTER_USER: (state, data) => {
-        const token = jwt_decode(data.token);
-        localStorage.setItem('token', token);
-        state.token = data;
-        state.role = jwt_decode(data.token).roles;
-        console.log(jwt_decode(data.token).roles)
-    },
-
-    CLEAR_ROLE: () => {
-        localStorage.removeItem('roles');
-        localStorage.removeItem('token');
     },
 
     REMOVE_USER: (state, allUsers) => {
@@ -66,23 +41,6 @@ const actions = {
             })
             .catch(error => console.log(error));
     },
-
-    ADD_USER:  async ({dispatch}, data) => {
-        await axios
-            .post('http://localhost:5000/auth/register', data)
-            .then(res => dispatch( res.data))
-            .catch(error => console.log(error));
-    },
-
-    LOGIN_USER:  async ({commit}, payload) => {
-        await axios
-            .post('http://localhost:5000/auth/login', payload)
-            .then(res => res.data)
-            .then(token => {
-                commit('REGISTER_USER', token);
-            })
-            .catch(error =>  console.log(error.response));
-    }
 };
 
 const namespaced = true

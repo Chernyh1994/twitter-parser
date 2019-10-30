@@ -43,7 +43,6 @@
       <v-text-field
         v-model="password"
         :append-icon="show1 ? 'mdi-eye-outline' : 'mdi-eye-off-outline'"
-        :rules="[rules.required, rules.min]"
         :type="show1 ? 'text' : 'password'"
         name="input-10-1"
         label="Password"
@@ -68,7 +67,7 @@
           Cancel
         </v-btn>
         <div>
-          Already got an account? <nuxt-link to="/auth">Login</nuxt-link>
+          Already got an account? <nuxt-link to="/login">Login</nuxt-link>
         </div>
       </v-card-actions>   
 
@@ -77,11 +76,12 @@
 </template>
 
 <script>
-import {  mapActions,  } from 'vuex';
 import Notification from '~/components/Notification'
 
 export default {
   layout: 'login',
+
+  auth: false,
 
   components: {
     Notification,
@@ -113,21 +113,27 @@ export default {
   },
 
   methods: {
-    ...mapActions('users', ['ADD_USER']),
-    async register(e) {
+    
+    async register() {
       try {
-        if(this.firstName && this.firstName && this.username && this.email && this.password){
-          await this.$store.dispatch('users/ADD_USER', {
+          await this.$axios.post('auth/register', {
             firstName: this.firstName,
             lastName: this.firstName,
             username: this.username,
             email: this.email,
             password: this.password
           })
-          this.$router.push('/auth')
-        } else { this.error  = 'Fill in all the fields'}
+
+          await this.$auth.loginWith('local', {
+            data: {
+              username: this.username,
+              password: this.password,
+            },
+          });
+
+          this.$router.push('/')
       } catch (e) {
-        this.error = e.response.data.message
+        this.error = e
       }
     }
   }

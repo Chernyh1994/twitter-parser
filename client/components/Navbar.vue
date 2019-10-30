@@ -96,21 +96,21 @@
                 tile outlined 
                 color="white" 
                 small  
-                @click="clear"  
+                @click="logout"  
                 v-if="ROLE"
               >
                 Sign out 
               </v-btn>
               <Nestedlists v-if="ROLE" />
 
-              <nuxt-link to="/auth" class="navbar-item white--text" v-if="!ROLE"> Login In </nuxt-link>
+              <nuxt-link to="/login" class="navbar-item white--text" v-if="!ROLE"> Login In </nuxt-link>
               <v-btn 
                 class="ma-4" 
                 tile 
                 outlined 
                 color="white" 
                 small 
-                to="/auth/registration" 
+                to="/login/registration" 
                 v-if="!ROLE"
               >
                 Register
@@ -124,7 +124,7 @@
 
 <script>
     import Nestedlists from './Nestedlists';
-    import { mapGetters, mapMutations } from 'vuex';
+    import { mapGetters, mapMutations, mapState } from 'vuex';
 
     export default {
 
@@ -132,13 +132,15 @@
             Nestedlists,
         },
 
-        computed: mapGetters('users',['ROLE']),
+        computed: {
+            ...mapGetters('auth', {ROLE: 'roleInUser'}),
+        },
+
 
         methods:{
-            ...mapMutations('users',['CLEAR_ROLE']),
-            async clear(){
-                await this.$store.commit('users/CLEAR_ROLE')
-            this.$router.go()
+            async logout() {
+                await this.$auth.logout()
+                this.$router.push('/')
             }
         },
 

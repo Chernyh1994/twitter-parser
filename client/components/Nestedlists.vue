@@ -14,8 +14,8 @@
         </v-btn>
       </template>
       <v-list>
-        <v-list-item exact >
-          <v-list-item-title>Profile</v-list-item-title>
+        <v-list-item exact to="/user" >
+          <v-list-item-title >Profile</v-list-item-title>
         </v-list-item>
         <v-list-item exact to="/inspire">
           <v-list-item-title>Secret</v-list-item-title>

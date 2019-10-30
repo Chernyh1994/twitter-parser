@@ -5,11 +5,14 @@ import { InjectModel } from '@nestjs/mongoose';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import * as bcrypt from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
+import * as JWT from 'jwt-decode';
+import { ObjectId } from 'mongodb';
 
 const saltRounds = 10;
 
 @Injectable()
 export class AuthService {
+  decode: any;
   constructor(
     @InjectModel('User') private readonly userModel: Model<User>,
     private readonly jwtService: JwtService,
@@ -38,7 +41,7 @@ export class AuthService {
       const userRegisterName = await this.findByUsername(newUser.username);
       if (!userRegisterEmail && !userRegisterName) {
         newUser.password = await bcrypt.hash(newUser.password, saltRounds);
-        newUser.roles = 'user';
+        newUser.role = 'user';
         return newUser.save();
       } else {
         throw new HttpException('REGISTRATION.USER_ALREADY_REGISTERED', HttpStatus.FORBIDDEN); }
@@ -53,8 +56,14 @@ export class AuthService {
     if (!isValidPass) { throw new HttpException('PASSWORD_NOT_FOUND', HttpStatus.BAD_REQUEST); }
 
     return {
-      token: this.jwtService.sign({id: userFromDb._id,
-        roles: userFromDb.roles}),
+      token: this.jwtService.sign({
+        id: userFromDb._id,
+        role: userFromDb.role}),
     };
+  }
+
+  async user(req): Promise<User> {
+    this.decode = await JWT(req.headers.authorization.split(' ')[1]);
+    return await this.userModel.findById({ _id: new ObjectId(this.decode.id)});
   }
 }
