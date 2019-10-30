@@ -1,6 +1,6 @@
 <template>
   <v-simple-table>
-    <template v-slot:default>
+    <template v-slot:default >
       <thead>
         <tr>
             <th class="text-left">First name</th>

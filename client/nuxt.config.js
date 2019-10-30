@@ -46,7 +46,9 @@ export default {
     ['nuxt-gmaps', {
       key: ''
     }],
-    'nuxt-vuex-localstorage'
+    'nuxt-vuex-localstorage',
+    '@nuxtjs/axios',
+    '@nuxtjs/auth'
   ],
   /*
   ** vuetify module configuration
@@ -81,11 +83,6 @@ export default {
   build: {
     transpile: [/^vue2-google-maps($|\/)/]
   },
-
-  modules: [
-    '@nuxtjs/axios',
-    '@nuxtjs/auth'
-  ],
   
   axios: {
     baseURL: 'http://localhost:5000/',
