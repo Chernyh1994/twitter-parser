@@ -17,10 +17,11 @@
     "jsonwebtoken": "^8.5.1",
     "jwt-decode": "^2.2.0",
     "nuxt": "^2.9.2",
-    "nuxt-gmaps": "^1.0.4",
+    "nuxt-gmaps": "^1.1.1",
     "nuxt-vuex-localstorage": "^1.2.6",
     "vue-masonry": "^0.10.5",
-    "vue-no-ssr": "^1.1.1"
+    "vue-no-ssr": "^1.1.1",
+    "vue2-google-maps": "^0.10.7"
   },
   "devDependencies": {
     "@nuxtjs/vuetify": "^1.9.0"

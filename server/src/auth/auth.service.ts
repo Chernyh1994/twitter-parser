@@ -5,11 +5,14 @@ import { InjectModel } from '@nestjs/mongoose';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import * as bcrypt from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
+import * as JWT from 'jwt-decode';
+import { ObjectId } from 'mongodb';
 
 const saltRounds = 10;
 
 @Injectable()
 export class AuthService {
+  decode: any;
   constructor(
     @InjectModel('User') private readonly userModel: Model<User>,
     private readonly jwtService: JwtService,
@@ -59,8 +62,8 @@ export class AuthService {
     };
   }
 
-  async user() {
-    return 'ddd';
+  async user(req): Promise<User> {
+    this.decode = await JWT(req.headers.authorization.split(' ')[1]);
+    return await this.userModel.findById({ _id: new ObjectId(this.decode.id)});
   }
-
 }

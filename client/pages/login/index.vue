@@ -54,7 +54,7 @@
           Cancel
       </v-btn> 
     </v-card-actions>
-    <v-card-text>New to Test(JSN)? <NuxtLink to='/auth/registration'> Create an account.</NuxtLink>or</v-card-text>
+    <v-card-text>New to Test(JSN)? <NuxtLink to='/login/registration'> Create an account.</NuxtLink>or</v-card-text>
   </v-form>
   </v-card>
 </template>
@@ -66,6 +66,8 @@ import Notification from '~/components/Notification';
 export default {
 
   layout: 'login',
+
+  auth: false,
 
   components: {
       Notification,

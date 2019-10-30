@@ -67,7 +67,7 @@
           Cancel
         </v-btn>
         <div>
-          Already got an account? <nuxt-link to="/auth">Login</nuxt-link>
+          Already got an account? <nuxt-link to="/login">Login</nuxt-link>
         </div>
       </v-card-actions>   
 
@@ -80,6 +80,8 @@ import Notification from '~/components/Notification'
 
 export default {
   layout: 'login',
+
+  auth: false,
 
   components: {
     Notification,

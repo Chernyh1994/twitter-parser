@@ -103,14 +103,14 @@
               </v-btn>
               <Nestedlists v-if="ROLE" />
 
-              <nuxt-link to="/auth" class="navbar-item white--text" v-if="!ROLE"> Login In </nuxt-link>
+              <nuxt-link to="/login" class="navbar-item white--text" v-if="!ROLE"> Login In </nuxt-link>
               <v-btn 
                 class="ma-4" 
                 tile 
                 outlined 
                 color="white" 
                 small 
-                to="/auth/registration" 
+                to="/login/registration" 
                 v-if="!ROLE"
               >
                 Register
@@ -132,16 +132,16 @@
             Nestedlists,
         },
 
-        computed: mapState({
-            ROLE: state => state.auth.user
-        }),
+        computed: {
+            ...mapGetters('auth', {ROLE: 'roleInUser'}),
+        },
 
 
         methods:{
-       async logout() {
-      await this.$auth.logout()
-      this.$router.push('/')
-    }
+            async logout() {
+                await this.$auth.logout()
+                this.$router.push('/')
+            }
         },
 
         data () {

@@ -41,6 +41,7 @@ export default {
   /*
   ** Nuxt.js modules
   */
+  
   modules: [
     ['nuxt-gmaps', {
       key: ''
@@ -76,6 +77,10 @@ export default {
     extend (config, ctx) {
     }
   },
+  
+  build: {
+    transpile: [/^vue2-google-maps($|\/)/]
+  },
 
   modules: [
     '@nuxtjs/axios',
@@ -98,7 +103,7 @@ export default {
           user: { 
             url: '/auth/user', 
             method: 'get', 
-            propertyName: false 
+            propertyName: false
           },
           // user:false,
           logout: false,
@@ -109,8 +114,8 @@ export default {
     }
   },
 
-  // router: {
-  //   middleware: ['auth']
-  // }
+  router: {
+    middleware: ['auth']
+  }
 };
 

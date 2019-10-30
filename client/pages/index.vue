@@ -70,6 +70,7 @@
   import NoSSR from 'vue-no-ssr';
 
   export default {
+    auth: false,
     components: {
       'no-ssr': NoSSR
     },

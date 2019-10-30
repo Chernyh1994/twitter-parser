@@ -1,4 +1,4 @@
-import { Controller, Post, HttpStatus, HttpCode, Get, Body, Response, UseInterceptors } from '@nestjs/common';
+import { Controller, Post, HttpStatus, HttpCode, Get, Body, Response, UseInterceptors, Res, Param, Req } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { LoggingInterceptor } from 'src/common/interceptors/logging.interceptor';
@@ -31,10 +31,9 @@ export class AuthController {
 
   @Get('user')
   @HttpCode(HttpStatus.OK)
-  public async user(@Response() res, @Body() auth) {
-    console.log(auth)
-    const result = await this.authService.user();
-    return res.status(HttpStatus.OK).json(result);
+  public async user(@Req() req, @Response() res) {
+    const user = await this.authService.user(req);
+    return res.status(HttpStatus.OK).json(user);
   }
 
 }
