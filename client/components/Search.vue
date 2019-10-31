@@ -18,11 +18,12 @@
       ></v-text-field>
 
       <v-text-field
-      v-model="rad"
+      v-model="geocodes"
       prepend-icon="mdi-map-marker-radius"
       hide-details
       single-line
       label="Golocation and radius"
+      disabled
       ></v-text-field>
 
       <v-select
@@ -47,26 +48,27 @@
 </template>
 
 <script>
-import {mapActions} from 'vuex';
+import {mapActions, mapGetters} from 'vuex';
 
   export default {
     data: () => ({
       valid: false,
       keyWord: '',
-      rad: '',
       count: '',
-      // radius: ['1km', '2km', '5km', '10km'],
       number_tweets: [1,2,5,10,50],
     }),
+    computed: {
+    ...mapGetters('apikeys', {geocodes: 'GEOCODE'}),
+    },
 
     methods:{
-      ...mapActions(' twitter', ['ADD_TWEETS']),
+      ...mapActions('twitter', ['ADD_TWEETS']),
       async  newTweet(e) {
         try { 
           await this.$store.dispatch('twitter/ADD_TWEETS',{ 
             q: this.keyWord,
             count: this.count, 
-            geocode: this.rad,   
+            geocode: this.geocodes,   
           })
           this.$router.push('/')    
         } catch (e) {

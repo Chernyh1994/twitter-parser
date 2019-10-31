@@ -20,12 +20,12 @@
                      </v-list-item-content>
                 </v-list-item>
 
-                <v-list-item exact to="/inspire" v-if="ROLE">
+                <v-list-item exact to="/user" v-if="ROLE">
                     <v-list-item-action>
-                        <v-icon>mdi-file-lock mdi-light</v-icon>
+                        <v-icon>mdi-clipboard-account mdi-light</v-icon>
                     </v-list-item-action>
                     <v-list-item-content>
-                        <v-list-item-title class="white--text headline" v-text="'Super Secret'" />
+                        <v-list-item-title class="white--text headline" v-text="'Profile'" />
                      </v-list-item-content>
                 </v-list-item>
 

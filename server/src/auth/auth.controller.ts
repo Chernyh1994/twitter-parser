@@ -14,7 +14,10 @@ export class AuthController {
   public async registration(@Response() res,  @Body() createUserDto: CreateUserDto) {
       const result = await this.authService.registration(createUserDto);
       if (!result) {
-          return res.status(HttpStatus.BAD_REQUEST).json(result);
+          return res.status(400).json({
+            status: 'error',
+            message: 'There was a problem creating the user, please try again later.'
+          });
       }
       return res.status(HttpStatus.OK).json(result);
   }
@@ -22,11 +25,15 @@ export class AuthController {
   @Post('login')
   @HttpCode(HttpStatus.OK)
   public async login(@Response() res, @Body() login: Login) {
-    const result = await this.authService.login(login.username, login.password);
-    if (!result) {
-      return res.status(HttpStatus.BAD_REQUEST).json(result);
-    }
-    return res.status(HttpStatus.OK).json(result);
+    try {
+      const result = await this.authService.login(login.username, login.password);
+      return res.status(HttpStatus.OK).json(result);
+    } catch (error) {
+        return res.status(400).json({
+          status: 'error',
+          message: 'Invalid email or password.'
+        });
+      }
   }
 
   @Get('user')
