@@ -43,6 +43,7 @@
       <v-text-field
         v-model="password"
         :append-icon="show1 ? 'mdi-eye-outline' : 'mdi-eye-off-outline'"
+        :rules="[rules.required, rules.min]"
         :type="show1 ? 'text' : 'password'"
         name="input-10-1"
         label="Password"
@@ -118,7 +119,7 @@ export default {
       try {
           await this.$axios.post('auth/register', {
             firstName: this.firstName,
-            lastName: this.firstName,
+            lastName: this.lastName,
             username: this.username,
             email: this.email,
             password: this.password
@@ -133,7 +134,7 @@ export default {
 
           this.$router.push('/')
       } catch (e) {
-        this.error = e
+        this.error = e.response.data.message;
       }
     }
   }

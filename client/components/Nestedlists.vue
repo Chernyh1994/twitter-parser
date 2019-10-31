@@ -10,7 +10,7 @@
           dark
           v-on="on"
         >
-          <v-icon >mdi-emoticon-cool mdi-light</v-icon>
+          <v-icon >mdi-account-check mdi-light</v-icon>
         </v-btn>
       </template>
       <v-list>

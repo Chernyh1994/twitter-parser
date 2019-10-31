@@ -17,7 +17,7 @@
                         dark
                     >
                         <v-list-item-content>
-                            <v-list-item-title class="headline mb-1">Name: {{user.firstName}}</v-list-item-title>
+                            <v-list-item-title class="headline mb-1">First Name: {{user.firstName}}</v-list-item-title>
                             <v-list-item-title class="headline mb-1">Last Name: {{user.lastName}}</v-list-item-title>
                             <v-list-item-title class="title">Email: {{user.email}}</v-list-item-title>
                             <v-list-item-title class="title">UserName: {{user.username}}</v-list-item-title>

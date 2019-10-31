@@ -34,9 +34,15 @@ export class AuthService {
     } else { return false; }
   }
 
+  isValidPassword(password: string) {
+    if (password.length >= 6) {
+      return password;
+    } else { return false; }
+  }
+
   async registration(createUserDto: CreateUserDto): Promise<User> {
     const newUser = await new this.userModel(createUserDto);
-    if (this.isValidEmail(newUser.email)) {
+    if (this.isValidEmail(newUser.email) && this.isValidPassword(newUser.password)) {
       const userRegisterEmail = await this.findByEmail(newUser.email);
       const userRegisterName = await this.findByUsername(newUser.username);
       if (!userRegisterEmail && !userRegisterName) {

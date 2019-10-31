@@ -28,11 +28,11 @@
         <v-text-field
           v-model="password"
           :append-icon="show1 ? 'mdi-eye-outline' : 'mdi-eye-off-outline'"
-
           :type="show1 ? 'text' : 'password'"
           name="input-10-1"
           label="Password"
           hint="At least 6 characters"
+          :rules="[rules.required, rules.min]"
           counter
           @click:append="show1 = !show1"
         ></v-text-field>
@@ -78,7 +78,13 @@ export default {
       username: '',
       password: '',
       error: null,
-      show1: false
+      show1: false,
+
+      rules: {
+          required: value => !!value || 'Required.',
+          min: v => v.length >= 6 || 'Min 6 characters',
+          emailMatch: () => ('The email and password you entered don\'t match'),
+      },
     };
   },
 
@@ -94,7 +100,7 @@ export default {
 
         this.$router.push('/');
       } catch (e) {
-        this.error = e;
+        this.error = e.response.data.message;
       }
     },
   },
