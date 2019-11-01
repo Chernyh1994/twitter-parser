@@ -19,8 +19,8 @@ export class TwitterService {
     }
 
     async addNewTweets(createTweetDto: CreateTweetDto): Promise<any> {
-        console.log('dddddddddddddd', this.client)
-        console.log('createTweetDtocreateTweetDtocreateTweetDto',createTweetDto)
+        // tslint:disable-next-line: no-console
+        console.log('createTweetDtocreateTweetDtocreateTweetDto', createTweetDto);
         const tweets = await this.client.get('search/tweets', createTweetDto );
         return await Promise.all(
             tweets.statuses.map(async (tweet) => {
@@ -30,7 +30,6 @@ export class TwitterService {
                 newTweet.retweetCount = tweet.retweet_count;
                 newTweet.favoriteCount = tweet.favorite_count;
                 newTweet.profileImages = tweet.user.profile_image_url_https;
-                console.log(newTweet)
                 newTweet.save();
             }),
         );

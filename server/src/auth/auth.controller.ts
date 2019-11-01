@@ -16,7 +16,7 @@ export class AuthController {
       if (!result) {
           return res.status(400).json({
             status: 'error',
-            message: 'There was a problem creating the user, please try again later.'
+            message: 'There was a problem creating the user, please try again later.',
           });
       }
       return res.status(HttpStatus.OK).json(result);
@@ -31,7 +31,7 @@ export class AuthController {
     } catch (error) {
         return res.status(400).json({
           status: 'error',
-          message: 'Invalid email or password.'
+          message: 'Invalid email or password.',
         });
       }
   }

@@ -3,7 +3,7 @@
     <no-ssr>
       <div 
         v-masonry
-        transition-duration="3s" 
+        transition-duration="none"
         item-selector=".item" 
         class="masonry-container"
       >
