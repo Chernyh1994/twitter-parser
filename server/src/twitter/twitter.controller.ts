@@ -1,4 +1,4 @@
-import { Controller, HttpStatus, Get, Res, Body, Post, Delete, Query, NotFoundException } from '@nestjs/common';
+import { Controller, HttpStatus, Get, Res, Body, Post, Delete, Query, NotFoundException, Render } from '@nestjs/common';
 import { TwitterService } from './twitter.service';
 import { CreateTweetDto } from './dto/create-tweet';
 import { ValidateObjectId } from 'src/common/pipes/parse-int.pipes';
@@ -21,10 +21,21 @@ export class TwitterController {
     }
 
     @Get('tweets')
-    async findAll(@Res() res) {
-        const tweets = await this.twitterService.findAllTweet();
-        return res.status(HttpStatus.OK).json(tweets);
+    // root(@Res() res) {
+    //     res.render('index');
+    //   }
+
+    @Render('index')
+    async root() {
+        return  await this.twitterService.findAllTweet();
     }
+
+    //bug come empty three blocks
+
+    // async findAll(@Res() res) {
+    //     const tweets = await this.twitterService.findAllTweet();
+    //     return res.status(HttpStatus.OK).json(tweets);
+    // }
 
     @Delete('remove')
     async removeTweet(@Res() res, @Query('tweetID', new ValidateObjectId()) tweetID) {

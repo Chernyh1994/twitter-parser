@@ -1,29 +1,23 @@
 <template>
-    <v-container>
-        <span class="mdi"> Ups, Sorry but we are doing technical work </span>
-        <span class="mdi mdi-worker"></span>
-        <br/>
-        <v-btn
-            class="ma-2"
-            color="#26c6da"
-            to='/' active-class
-            >
-            Go Home
-        </v-btn>
-    </v-container>
+    <div v-html="this.data"></div>
 </template>
 
 <script>
 export default {
-  
+    data(){
+        return{
+            data:{}
+        }
+    },
+    
+    mounted() {
+      this.$axios
+        .get('twitter/tweets')
+        .then(request => (this.data = request.data))
+        .catch(error => console.log(error));
+    }
 }
 </script>
 
-<style scoped>
-
-.mdi{
-    font-size: 50px;
-}
 
 
-</style>
