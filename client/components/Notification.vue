@@ -1,25 +1,30 @@
 <template>
-  <v-card
-  class="ma-2 pa-7"
-  color="red"
-  > 
-    <div class="notification">
-        <h1 class="mdi mdi-loading mdi-spin">{{ message }}</h1>
-    </div>
-  </v-card>
+    <v-dialog
+      v-model="dialog"
+      width="320"
+    >
+        <v-alert
+          border="right"
+          colored-border
+          type="error"
+          elevation="2"
+          class="ma-0"
+        >
+          {{message}}
+        </v-alert>
+    </v-dialog>
 </template>
 
 <script>
-export default {
+  export default {
 
-  name: 'Notification',
-  props: ['message']
-}
+    data () {
+      return {
+      }
+    },
+
+    name: 'Notification',
+    props: ['message', 'dialog'],
+    
+  }
 </script>
-
-
-<style scoped>
-    .notification{
-        text-align:center;
-    }
-</style>

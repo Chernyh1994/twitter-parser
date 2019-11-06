@@ -11,31 +11,38 @@ export class TwitterController {
     @Post('twitter')
     async Tweet(@Res() res, @Body() createTweetDto: CreateTweetDto) {
         const twitter = await this.twitterService.addNewTweets(createTweetDto);
+        if (!twitter) {
+            return res.status(400).json({
+              status: 'error',
+              message: 'There was a problem creating new Tweet, please try again.',
+            });
+        }
         return res.status(HttpStatus.OK).json(twitter);
     }
 
     @Post('api')
     async apiTwitter(@Res() res, @Body() appTwitterDto: AppTwitterDto) {
         const api = await this.twitterService.addApiTwitter(appTwitterDto);
+        if (!api) {
+            return res.status(400).json({
+              status: 'error',
+              message: 'There was a problem creating Twitter API, please try again.',
+            });
+        }
         return res.status(HttpStatus.OK).json(api);
     }
 
     @Get('tweets')
-    // root(@Res() res) {
-    //     res.render('index');
-    //   }
 
-    @Render('index')
-    async root() {
-        return  await this.twitterService.findAllTweet();
-    }
-
-    //bug come empty three blocks
-
-    // async findAll(@Res() res) {
-    //     const tweets = await this.twitterService.findAllTweet();
-    //     return res.status(HttpStatus.OK).json(tweets);
+    // @Render('index')
+    // async root() {
+    //     return  await this.twitterService.findAllTweet();
     // }
+// <------------------------------render----------------------------------->
+    async findAll(@Res() res) {
+        const tweets = await this.twitterService.findAllTweet();
+        return res.status(HttpStatus.OK).json(tweets);
+    }
 
     @Delete('remove')
     async removeTweet(@Res() res, @Query('tweetID', new ValidateObjectId()) tweetID) {

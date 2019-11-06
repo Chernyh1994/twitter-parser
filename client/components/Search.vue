@@ -72,7 +72,7 @@ import {mapActions, mapGetters} from 'vuex';
           })
           this.$router.push('/')    
         } catch (e) {
-          this.error = e.response.data.message
+          this.error = e
         }
       },
     }

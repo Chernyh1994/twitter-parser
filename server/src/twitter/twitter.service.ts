@@ -14,14 +14,15 @@ export class TwitterService {
     constructor(@InjectModel('Tweet') private readonly tweetModel: Model<Tweet>) {}
 
     async addApiTwitter(appTwitterDto: AppTwitterDto): Promise<any> {
-        const apikeys = await appTwitterDto;
-        return this.client = new Twitter(apikeys);
+        console.log(appTwitterDto)
+        return this.client = new Twitter(appTwitterDto);
     }
 
     async addNewTweets(createTweetDto: CreateTweetDto): Promise<any> {
         // tslint:disable-next-line: no-console
         console.log('createTweetDtocreateTweetDtocreateTweetDto', createTweetDto);
         const tweets = await this.client.get('search/tweets', createTweetDto );
+        console.log(tweets)
         return await Promise.all(
             tweets.statuses.map(async (tweet) => {
                 const newTweet = await new this.tweetModel(createTweetDto);

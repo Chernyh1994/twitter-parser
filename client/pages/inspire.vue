@@ -3,20 +3,20 @@
 </template>
 
 <script>
-export default {
-    data(){
-        return{
-            data:{}
-        }
-    },
+// export default {
+//     data(){
+//         return{
+//             data:{}
+//         }
+//     },
     
-    mounted() {
-      this.$axios
-        .get('twitter/tweets')
-        .then(request => (this.data = request.data))
-        .catch(error => console.log(error));
-    }
-}
+//     mounted() {
+//       this.$axios
+//         .get('twitter/tweets')
+//         .then(request => (this.data = request.data))
+//         .catch(error => console.log(error));
+//     }
+// }
 </script>
 
 
