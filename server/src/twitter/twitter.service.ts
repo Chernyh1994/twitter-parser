@@ -40,9 +40,8 @@ export class TwitterService {
         return await this.tweetModel.find().exec();
     }
 
-    async removeTweet(tweetID): Promise<any> {
-        const removeTweet = await this.tweetModel
-            .findByIdAndRemove(tweetID);
+    async removeTweet(tweetID: string): Promise<object> {
+        const removeTweet = await this.tweetModel.findByIdAndDelete(tweetID);
         return removeTweet;
     }
 }

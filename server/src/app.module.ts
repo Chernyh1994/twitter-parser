@@ -8,7 +8,7 @@ import { TwitterModule } from './twitter/twitter.module';
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://localhost/server', { useNewUrlParser: true }),
+    MongooseModule.forRoot('mongodb://localhost/server', { useUnifiedTopology: true, useNewUrlParser: true}),
     AuthModule,
     UsersModule,
     TwitterModule,
