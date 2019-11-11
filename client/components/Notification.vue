@@ -1,30 +1,31 @@
 <template>
-    <v-dialog
-      v-model="dialog"
-      width="320"
+ <div class="text-center">
+    <v-snackbar
+      v-model="snackbar"
+      :timeout="timeout"
+      color="error"
     >
-        <v-alert
-          border="right"
-          colored-border
-          type="error"
-          elevation="2"
-          class="ma-0"
-        >
-          {{message}}
-        </v-alert>
-    </v-dialog>
+      {{ message }}
+      <v-btn
+        color="white"
+        text
+        @click="snackbar = false"
+      >
+        Close
+      </v-btn>
+    </v-snackbar>
+  </div>
 </template>
 
 <script>
   export default {
 
-    data () {
-      return {
-      }
-    },
-
+    data: () => ({
+      snackbar: true,
+      timeout: 4000,
+    }),
     name: 'Notification',
-    props: ['message', 'dialog'],
+    props: ['message', 'show'],
     
   }
 </script>

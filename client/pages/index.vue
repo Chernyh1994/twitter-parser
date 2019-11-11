@@ -63,9 +63,7 @@
 </template>
 
 <script>
-  // import { mapState, mapActions, mapGetters } from 'vuex';
   import NoSSR from 'vue-no-ssr';
-  // import axios from 'axios'
 
   export default {
     async asyncData() {
@@ -83,16 +81,7 @@
       'no-ssr': NoSSR
     },
 
-    //  computed: {
-    //   ...mapGetters('twitter',{tweets: 'TWEET'}),
-    // },
-
-    // methods:{ 
-    //   ...mapActions('twitter', ['REMOVE_TWEET'])
-    // },
-  
     mounted() {
-      // this.$store.dispatch('twitter/GET_TWEETS');
       if (typeof this.$redrawVueMasonry === 'function') {
         this.$redrawVueMasonry()
       }

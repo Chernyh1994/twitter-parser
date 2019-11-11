@@ -5,7 +5,6 @@ import { InjectModel } from '@nestjs/mongoose';
 
 @Injectable()
 export class UsersService {
-  [x: string]: any;
     constructor(@InjectModel('User') private readonly userModel: Model<User>) {}
 
     async findAll(): Promise<User[]> {

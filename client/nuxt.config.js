@@ -97,7 +97,6 @@ export default {
             method: 'get', 
             propertyName: false
           },
-          // user:false,
           logout: false,
         },
         tokenRequired: true,

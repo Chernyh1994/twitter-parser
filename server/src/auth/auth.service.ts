@@ -41,10 +41,10 @@ export class AuthService {
   }
 
   async registration(createUserDto: CreateUserDto): Promise<User> {
-    const newUser = await new this.userModel(createUserDto);
+    const newUser: User =  new this.userModel(createUserDto);
     if (this.isValidEmail(newUser.email) && this.isValidPassword(newUser.password)) {
-      const userRegisterEmail = await this.findByEmail(newUser.email);
-      const userRegisterName = await this.findByUsername(newUser.username);
+      const userRegisterEmail: User = await this.findByEmail(newUser.email);
+      const userRegisterName: User = await this.findByUsername(newUser.username);
       if (!userRegisterEmail && !userRegisterName) {
         newUser.password = await bcrypt.hash(newUser.password, saltRounds);
         newUser.role = 'user';
@@ -54,11 +54,11 @@ export class AuthService {
     }
   }
 
-  async login(username, password) {
-    const userFromDb = await this.userModel.findOne({ username});
+  async login(username: any, password: any): Promise<{token: string;}> {
+    const userFromDb: User = await this.userModel.findOne({ username});
     if (!userFromDb) { throw new HttpException('USERNAME_NOT_FOUND', HttpStatus.BAD_REQUEST); }
 
-    const isValidPass = await bcrypt.compare(password, userFromDb.password);
+    const isValidPass: boolean = await bcrypt.compare(password, userFromDb.password);
     if (!isValidPass) { throw new HttpException('PASSWORD_NOT_FOUND', HttpStatus.BAD_REQUEST); }
 
     return {
@@ -68,7 +68,7 @@ export class AuthService {
     };
   }
 
-  async user(req): Promise<User> {
+  async user(req: any): Promise<User> {
     this.decode = await JWT(req.headers.authorization.split(' ')[1]);
     return await this.userModel.findById({ _id: new ObjectId(this.decode.id)});
   }

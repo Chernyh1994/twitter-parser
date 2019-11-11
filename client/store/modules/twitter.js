@@ -36,8 +36,13 @@ export default {
     
         ADD_TWEETS:  async ({dispatch}, payload) => {
             await axios
-                .post('http://localhost:5000/twitter/twitter', payload)
-                .then(res => dispatch( res.data))
+                .post('http://localhost:5000/twitter/twitterData', payload)
+                .then(res => dispatch( res.payload))
+                .catch(error => console.log(error));
+
+            await axios
+                .post('http://localhost:5000/twitter/twitter')
+                .then(res => dispatch( res))
                 .catch(error => console.log(error));
         },
     
