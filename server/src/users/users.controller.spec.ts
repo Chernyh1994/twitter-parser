@@ -34,7 +34,7 @@ describe('Users Controller', () => {
 
   describe('deleteUser', () => {
     it('should delete to the user', async () => {
-      const params: string = 'userID';
+      const params: string = 'qwlkeqwie3234Nkke66Fgew6i';
       await usersController.deleteUser(response, params);
       expect(usersService.deleteUser).toHaveBeenCalledWith(params);
     });

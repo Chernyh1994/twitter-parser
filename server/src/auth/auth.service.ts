@@ -9,12 +9,12 @@ import * as JWT from 'jwt-decode';
 import { ObjectId } from 'mongodb';
 
 const saltRounds = 10;
-
 @Injectable()
 export class AuthService {
   decode: any;
   constructor(
-    @InjectModel('User') private readonly userModel: Model<User>,
+    @InjectModel('User')
+    private readonly userModel: Model<User>,
     private readonly jwtService: JwtService,
   ) {}
 
@@ -26,7 +26,7 @@ export class AuthService {
     return await this.userModel.findOne({email}).exec();
   }
 
-  isValidEmail(email: string) {
+  isValidEmail(email: string): boolean {
     if (email) {
       // tslint:disable-next-line: max-line-length
       const control = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -34,7 +34,7 @@ export class AuthService {
     } else { return false; }
   }
 
-  isValidPassword(password: string) {
+  isValidPassword(password: string): string | false {
     if (password.length >= 6) {
       return password;
     } else { return false; }
@@ -54,7 +54,7 @@ export class AuthService {
     }
   }
 
-  async login(username: any, password: any): Promise<{token: string;}> {
+  async login(username: any, password: any): Promise<{token: string; }> {
     const userFromDb: User = await this.userModel.findOne({ username});
     if (!userFromDb) { throw new HttpException('USERNAME_NOT_FOUND', HttpStatus.BAD_REQUEST); }
 
@@ -62,9 +62,12 @@ export class AuthService {
     if (!isValidPass) { throw new HttpException('PASSWORD_NOT_FOUND', HttpStatus.BAD_REQUEST); }
 
     return {
-      token: this.jwtService.sign({
-        id: userFromDb._id,
-        role: userFromDb.role}),
+      token: this.jwtService.sign(
+        {
+          id: userFromDb._id,
+          role: userFromDb.role,
+        },
+      ),
     };
   }
 

@@ -1,23 +1,17 @@
 <template>
-<v-app>
-  <v-container bg fill-height grid-list-md text-xs-center>
-    <v-layout row wrap align-center>
+  <v-app>
+    <v-container bg fill-height grid-list-md text-xs-center>
+      <v-layout row wrap align-center>
         <v-flex>
-
-            <Nuxt />
-
+          <Nuxt />
         </v-flex>
-    </v-layout> 
-  </v-container>
-</v-app>
+      </v-layout>
+    </v-container>
+  </v-app>
 </template>
 
-<style scoped>
- 
-</style>
+<style scoped></style>
 
 <script>
-  export default {
-    
-  }
+export default {}
 </script>

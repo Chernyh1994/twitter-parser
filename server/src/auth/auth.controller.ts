@@ -1,12 +1,12 @@
-import { 
-    Controller, 
-    Post, 
-    HttpStatus, 
-    Get, 
-    Body, 
-    Response, 
-    UseInterceptors, 
-    Req 
+import {
+    Controller,
+    Post,
+    HttpStatus,
+    Get,
+    Body,
+    Response,
+    UseInterceptors,
+    Req,
   } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from '../users/dto/create-user.dto';
@@ -20,7 +20,7 @@ export class AuthController {
 
   @Post('register')
   public async registration(@Response() res: any,  @Body() createUserDto: CreateUserDto): Promise<object> {
-    try {  
+    try {
       const result: object = await this.authService.registration(createUserDto);
       return res.status(HttpStatus.OK).json(result);
     } catch (error) {

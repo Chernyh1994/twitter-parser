@@ -1,12 +1,12 @@
-import { 
+import {
     Controller,
-    HttpStatus, 
-    Get, 
-    Res, 
-    Body, 
-    Post, 
-    Delete, 
-    Query 
+    HttpStatus,
+    Get,
+    Res,
+    Body,
+    Post,
+    Delete,
+    Query,
 } from '@nestjs/common';
 import { TwitterService } from './twitter.service';
 import { CreateTweetDto } from './dto/create-tweet';
