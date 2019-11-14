@@ -1,18 +1,60 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthController } from './auth.controller';
+import { AuthService } from './auth.service';
+import { response, request } from 'express';
 
-describe('Auth Controller', () => {
-  let controller: AuthController;
+describe('Users Controller', () => {
+  let testingModule: TestingModule;
+  let authController: AuthController;
+  let authService: AuthService;
 
   beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
+    testingModule = await Test.createTestingModule({
       controllers: [AuthController],
+      providers: [
+        {
+          provide: AuthService,
+          useFactory: () => ({
+            registration: jest.fn(() => true),
+            login: jest.fn(() => true),
+            user: jest.fn(() => true),
+          }),
+        },
+      ],
     }).compile();
-
-    controller = module.get<AuthController>(AuthController);
+    authController = testingModule.get(AuthController);
+    authService = testingModule.get(AuthService);
   });
 
-  it('should be defined', () => {
-    expect(controller).toBeDefined();
+  describe('registration', () => {
+    it('should create new User', async () => {
+      const params = {
+        firstName: 'firstName',
+        lastName: 'lastName',
+        username: 'username',
+        email: 'email',
+        password: 'password',
+      };
+      await authController.registration(response, params);
+      expect(authService.registration).toHaveBeenCalledWith(params);
+    });
+  });
+
+  describe('login', () => {
+    it('should return User', async () => {
+      const params = {
+        username: 'username',
+        password: 'password',
+      };
+      await authController.login(response, params);
+      expect(authService.login).toHaveBeenCalledWith(params);
+    });
+  });
+
+  describe('user', () => {
+    it('should return User', async () => {
+      await authController.user(request, response);
+      expect(authService.user).toHaveBeenCalled();
+    });
   });
 });

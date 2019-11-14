@@ -4,8 +4,9 @@ import { Request, Response } from 'express';
 
 @Injectable()
 export class LoggerMiddleware implements NestMiddleware {
-  use(req: Request, res: Response, next: Function) {
-    console.log('Request...');
+  // tslint:disable-next-line: variable-name
+  use(_req: Request, _res: Response, next: () => void) {
+    // console.log('Request...');
     next();
   }
 }

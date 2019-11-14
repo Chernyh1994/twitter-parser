@@ -1,9 +1,6 @@
 <template>
-  <v-card
-  class="ma-1 pa-7"
-  >    
-  
-   <Notification :message="error" v-if="error"/>
+  <v-card class="ma-1 pa-7">
+    <Notification v-if="error" :message="error" />
 
     <span>New account</span>
     <v-form
@@ -14,31 +11,18 @@
       method="post"
       @submit.prevent="register"
     >
+      <v-text-field v-model="firstName" label="First Name" required />
 
-      <v-text-field
-        v-model="firstName"
-        label="First Name"
-        required
-      ></v-text-field>
+      <v-text-field v-model="lastName" label="Last Name" required />
 
-      <v-text-field
-        v-model="lastName"
-        label="Last Name"
-        required
-      ></v-text-field>
-
-      <v-text-field
-        v-model="username"
-        label="User Name"
-        required
-      ></v-text-field>
+      <v-text-field v-model="username" label="User Name" required />
 
       <v-text-field
         v-model="email"
         :rules="emailRules"
         label="E-mail"
         required
-      ></v-text-field>
+      />
 
       <v-text-field
         v-model="password"
@@ -50,94 +34,86 @@
         hint="At least 6 characters"
         counter
         @click:append="show1 = !show1"
-      ></v-text-field>
+      />
 
       <v-card-actions>
-        <v-btn
-          color="primary"
-          class="mr-4"
-          type="submit"
-        >
+        <v-btn color="primary" class="mr-4" type="submit">
           Create
         </v-btn>
-        <v-btn
-          color="primary"
-          class="mr-4"
-          to="/"
-        >
+        <v-btn color="primary" class="mr-4" to="/">
           Cancel
         </v-btn>
         <div>
-          Already got an account? <nuxt-link to="/login">Login</nuxt-link>
+          Already got an account?
+          <nuxt-link to="/login">
+            Login
+          </nuxt-link>
         </div>
-      </v-card-actions>   
-
+      </v-card-actions>
     </v-form>
   </v-card>
 </template>
 
 <script>
-import Notification from '~/components/Notification'
+import Notification from "~/components/Notification"
 
 export default {
-  layout: 'login',
+  layout: "login",
 
   auth: false,
 
   components: {
-    Notification,
+    Notification
   },
 
   data() {
-      return{
+    return {
       show1: false,
       valid: true,
       error: null,
 
-      firstName: '',
-      lastName: '',
-      username: '',
-      email: '',
-      password: '',
+      firstName: "",
+      lastName: "",
+      username: "",
+      email: "",
+      password: "",
 
       emailRules: [
-          v => !!v || 'E-mail is required',
-          v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
+        v => !!v || "E-mail is required",
+        v => /.+@.+\..+/.test(v) || "E-mail must be valid"
       ],
 
       rules: {
-          required: value => !!value || 'Required.',
-          min: v => v.length >= 6 || 'Min 6 characters',
-          emailMatch: () => ('The email and password you entered don\'t match'),
-      },
+        required: value => !!value || "Required.",
+        min: v => v.length >= 6 || "Min 6 characters",
+        emailMatch: () => "The email and password you entered don't match"
+      }
     }
   },
 
   methods: {
-    
     async register() {
       try {
-          await this.$axios.post('auth/register', {
-            firstName: this.firstName,
-            lastName: this.lastName,
+        await this.$axios.post("auth/register", {
+          firstName: this.firstName,
+          lastName: this.lastName,
+          username: this.username,
+          email: this.email,
+          password: this.password
+        })
+
+        await this.$auth.loginWith("local", {
+          data: {
             username: this.username,
-            email: this.email,
             password: this.password
-          })
+          }
+        })
 
-          await this.$auth.loginWith('local', {
-            data: {
-              username: this.username,
-              password: this.password,
-            },
-          });
-
-          this.$router.push('/')
+        this.$router.push("/")
       } catch (e) {
-        this.error = e.response.data.message;
+        this.error = e.response.data.message
       }
     }
   }
 }
 </script>
-

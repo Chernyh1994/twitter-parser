@@ -1,25 +1,22 @@
 <template>
-  <v-card
-  class="ma-2 pa-7"
-  color="red"
-  > 
-    <div class="notification">
-        <h1 class="mdi mdi-loading mdi-spin">{{ message }}</h1>
-    </div>
-  </v-card>
+  <div class="text-center">
+    <v-snackbar v-model="snackbar" :timeout="timeout" color="error">
+      {{ message }}
+      <v-btn color="white" text @click="snackbar = false">
+        Close
+      </v-btn>
+    </v-snackbar>
+  </div>
 </template>
 
 <script>
+/* eslint-disable */
 export default {
-
-  name: 'Notification',
-  props: ['message']
+  name: "Notification",
+  props: ["message", "show"],
+  data: () => ({
+    snackbar: true,
+    timeout: 4000
+  })
 }
 </script>
-
-
-<style scoped>
-    .notification{
-        text-align:center;
-    }
-</style>

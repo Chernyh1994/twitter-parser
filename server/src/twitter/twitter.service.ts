@@ -4,33 +4,34 @@ import * as Twitter from 'twitter';
 import { Tweet } from './interfaces/tweet.interface';
 import { InjectModel } from '@nestjs/mongoose';
 import { CreateTweetDto } from './dto/create-tweet';
-import { AppTwitterDto } from './dto/twitter-api';
+import { ApiTwitterDto } from './dto/twitter-api';
+import { CreateDataDto } from './dto/twitter-data';
 
 @Injectable()
 export class TwitterService {
-    client;
-    params;
+    client: any;
+    params: any;
 
     constructor(@InjectModel('Tweet') private readonly tweetModel: Model<Tweet>) {}
 
-    async addApiTwitter(appTwitterDto: AppTwitterDto): Promise<any> {
-        const apikeys = await appTwitterDto;
-        return this.client = new Twitter(apikeys);
+    async addApiTwitter(apiTwitterDto: ApiTwitterDto): Promise<object> {
+        return this.client = new Twitter(apiTwitterDto);
     }
 
-    async addNewTweets(createTweetDto: CreateTweetDto): Promise<any> {
-        console.log('dddddddddddddd', this.client)
-        console.log('createTweetDtocreateTweetDtocreateTweetDto',createTweetDto)
-        const tweets = await this.client.get('search/tweets', createTweetDto );
+    async addDataTwitter(createDataDto: CreateDataDto): Promise<object> {
+        return this.params = createDataDto;
+    }
+
+    async addNewTweets(createTweetDto: CreateTweetDto): Promise<object> {
+        const tweets: any = await this.client.get('search/tweets', this.params);
         return await Promise.all(
-            tweets.statuses.map(async (tweet) => {
-                const newTweet = await new this.tweetModel(createTweetDto);
+            tweets.statuses.map(async (tweet: any) => {
+                const newTweet: any = new this.tweetModel(createTweetDto);
                 newTweet.text = tweet.text;
                 newTweet.username = tweet.user.name;
                 newTweet.retweetCount = tweet.retweet_count;
                 newTweet.favoriteCount = tweet.favorite_count;
                 newTweet.profileImages = tweet.user.profile_image_url_https;
-                console.log(newTweet)
                 newTweet.save();
             }),
         );
@@ -40,9 +41,8 @@ export class TwitterService {
         return await this.tweetModel.find().exec();
     }
 
-    async removeTweet(tweetID): Promise<any> {
-        const removeTweet = await this.tweetModel
-            .findByIdAndRemove(tweetID);
+    async removeTweet(tweetID: string): Promise<object> {
+        const removeTweet: object = await this.tweetModel.findByIdAndDelete(tweetID);
         return removeTweet;
     }
 }

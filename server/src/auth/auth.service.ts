@@ -9,12 +9,12 @@ import * as JWT from 'jwt-decode';
 import { ObjectId } from 'mongodb';
 
 const saltRounds = 10;
-
 @Injectable()
 export class AuthService {
   decode: any;
   constructor(
-    @InjectModel('User') private readonly userModel: Model<User>,
+    @InjectModel('User')
+    private readonly userModel: Model<User>,
     private readonly jwtService: JwtService,
   ) {}
 
@@ -26,7 +26,7 @@ export class AuthService {
     return await this.userModel.findOne({email}).exec();
   }
 
-  isValidEmail(email: string) {
+  isValidEmail(email: string): boolean {
     if (email) {
       // tslint:disable-next-line: max-line-length
       const control = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -34,17 +34,17 @@ export class AuthService {
     } else { return false; }
   }
 
-  isValidPassword(password: string) {
+  isValidPassword(password: string): string | false {
     if (password.length >= 6) {
       return password;
     } else { return false; }
   }
 
   async registration(createUserDto: CreateUserDto): Promise<User> {
-    const newUser = await new this.userModel(createUserDto);
+    const newUser: User =  new this.userModel(createUserDto);
     if (this.isValidEmail(newUser.email) && this.isValidPassword(newUser.password)) {
-      const userRegisterEmail = await this.findByEmail(newUser.email);
-      const userRegisterName = await this.findByUsername(newUser.username);
+      const userRegisterEmail: User = await this.findByEmail(newUser.email);
+      const userRegisterName: User = await this.findByUsername(newUser.username);
       if (!userRegisterEmail && !userRegisterName) {
         newUser.password = await bcrypt.hash(newUser.password, saltRounds);
         newUser.role = 'user';
@@ -54,21 +54,24 @@ export class AuthService {
     }
   }
 
-  async login(username, password) {
-    const userFromDb = await this.userModel.findOne({ username});
+  async login(username: any, password: any): Promise<{token: string; }> {
+    const userFromDb: User = await this.userModel.findOne({ username});
     if (!userFromDb) { throw new HttpException('USERNAME_NOT_FOUND', HttpStatus.BAD_REQUEST); }
 
-    const isValidPass = await bcrypt.compare(password, userFromDb.password);
+    const isValidPass: boolean = await bcrypt.compare(password, userFromDb.password);
     if (!isValidPass) { throw new HttpException('PASSWORD_NOT_FOUND', HttpStatus.BAD_REQUEST); }
 
     return {
-      token: this.jwtService.sign({
-        id: userFromDb._id,
-        role: userFromDb.role}),
+      token: this.jwtService.sign(
+        {
+          id: userFromDb._id,
+          role: userFromDb.role,
+        },
+      ),
     };
   }
 
-  async user(req): Promise<User> {
+  async user(req: any): Promise<User> {
     this.decode = await JWT(req.headers.authorization.split(' ')[1]);
     return await this.userModel.findById({ _id: new ObjectId(this.decode.id)});
   }

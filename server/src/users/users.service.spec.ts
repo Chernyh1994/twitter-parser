@@ -2,17 +2,36 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { UsersService } from './users.service';
 
 describe('UsersService', () => {
+  let testingModule: TestingModule;
   let service: UsersService;
 
   beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      providers: [UsersService],
+    testingModule = await Test.createTestingModule({
+      providers: [
+        {
+          provide: UsersService,
+          useFactory: () => ({
+            findAll: jest.fn(() => true),
+            deleteUser: jest.fn(() => true),
+          }),
+        },
+      ],
     }).compile();
-
-    service = module.get<UsersService>(UsersService);
+    service = testingModule.get(UsersService);
   });
 
-  it('should be defined', () => {
-    expect(service).toBeDefined();
+  describe('findAll', () => {
+    it('should return all Users', async () => {
+      await service.findAll();
+      expect(service.findAll).toHaveBeenCalled();
+    });
+  });
+
+  describe('deleteUser', () => {
+    it('should delete to the user', async () => {
+      const params: string = 'qwlkeqwie3234Nkke66Fgew6i';
+      await service.deleteUser(params);
+      expect(service.deleteUser).toHaveBeenCalledWith(params);
+    });
   });
 });

@@ -1,28 +1,24 @@
 <template>
-  <v-app >
-   
-    <Navbar/>
+  <v-app>
+    <Navbar />
 
-      <v-content>
-        <nuxt />
-      </v-content>
+    <v-content>
+      <nuxt />
+    </v-content>
 
-    <Footer/>
-
+    <Footer />
   </v-app>
 </template>
 
 <script>
-import Footer from '~/components/Footer'
-import Navbar from '~/components/Navbar'
+import Footer from "~/components/Footer"
+import Navbar from "~/components/Navbar"
 export default {
   components: {
     Footer,
     Navbar
-  },
+  }
 }
 </script>
 
-<style> 
-  
-</style>
+<style></style>
